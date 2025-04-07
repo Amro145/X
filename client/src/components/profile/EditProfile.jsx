@@ -22,7 +22,7 @@ function EditProfile() {
     link: formData.link.toString(),
   };
   const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: [e.target.value] });
+    setFormData({ ...formData, [e.target.name]: e.target.value }); // Fix: Remove array brackets
   };
 
   return (

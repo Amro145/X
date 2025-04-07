@@ -291,18 +291,16 @@ export const useAuthStore = create((set, get) => ({
         }
     },
     createPostFn: async (data) => {
-        set({ isCreateingPost: true })
+        set({ isCreateingPost: true });
         try {
-            const res = await myAxios.post("/post/createpost", data)
-            set({ allPost: res.data })
-
+            const res = await myAxios.post("/post/createpost", data);
+            set((state) => ({
+                allPost: [res.data.newPost, ...state.allPost], // Fix: Append new post
+            }));
         } catch (error) {
-            // console.log(error.response.data.message)
             toast.error(error.response.data.message);
-
         } finally {
-            set({ isCreateingPost: false })
-
+            set({ isCreateingPost: false });
         }
     },
     addCommentFn: async (postId, data) => {

@@ -9,21 +9,21 @@ import PostDetails from "./post/PostDetails";
 function Home() {
   return (
     <>
-      <div className="grid grid-cols-12 grid-rows-12 gap-0">
-        <div className="col-span-3 row-span-12 fixed top-0">
+      <div className="grid grid-cols-12 gap-0">
+        <div className="col-span-3 fixed top-0 h-screen">
           <Sidbar />
         </div>
-        <div className="col-span-3 row-span-12 col-start-10 row-start-1 fixed top-0 right-3">
+        <div className="col-span-3 fixed top-0 right-0 h-screen">
           <Rightbar />
         </div>
-        <div className="md:col-span-6 h-auto my-0   md:col-start-4 col-start-1 col-span-12 row-start-1  overflow-hidden">
+        <div className="md:col-span-6 col-span-12 md:col-start-4 col-start-1">
           <Navbar />
-        </div>
-        <div className="col-span-12  overflow-auto col-start-1  md:col-span-6 md:col-start-4">
-          <CreatePost />
-        </div>
-        <div className="col-span-12 row-span-10 col-start-1 -mt-20  md:col-span-6 md:col-start-4">
-          <Post />
+          <div className="mt-4">
+            <CreatePost />
+          </div>
+          <div className="mt-4">
+            <Post />
+          </div>
         </div>
       </div>
     </>

@@ -70,7 +70,7 @@ function Singup() {
                   name="email"
                   placeholder="Email"
                   className="input"
-                  value={FormData.email}
+                  value={formData.email}
                   onChange={handleOnChange}
                 />
               </label>
@@ -80,7 +80,7 @@ function Singup() {
                   type="text"
                   placeholder="User Name"
                   className="input"
-                  value={FormData.userName}
+                  value={formData.userName}
                   name="userName"
                   onChange={handleOnChange}
                 />
@@ -91,7 +91,7 @@ function Singup() {
                   type="password"
                   placeholder=" Password"
                   className="input"
-                  value={FormData.password}
+                  value={formData.password}
                   name="password"
                   onChange={handleOnChange}
                 />

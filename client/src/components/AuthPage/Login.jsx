@@ -50,7 +50,7 @@ function Login() {
                   name="email"
                   placeholder="Email"
                   className="input"
-                  value={FormData.email}
+                  value={formData.email}
                   onChange={handleonChange}
                 />
               </label>
@@ -61,7 +61,7 @@ function Login() {
                   type="password"
                   placeholder=" Password"
                   className="input"
-                  value={FormData.password}
+                  value={formData.password}
                   name="password"
                   onChange={handleonChange}
                 />
