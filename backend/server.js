@@ -35,3 +35,11 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoute);
 app.use("/api/post", postRoutes);
 app.use("/api/notifiction", notifictionRoutes);
+
+// Global error-handling middleware
+app.use((err, req, res, next) => {
+  console.error("Error:", err.message); // Log the error to the console
+  res.status(err.status || 500).json({
+    message: err.message || "Internal Server Error",
+  });
+});
