@@ -102,11 +102,11 @@ const postSlice = createSlice({
                 state.postLoading = true;
                 state.error = null;
             })
-            .addCase(deletePost.fulfilled, (state, action) => {
+            .addCase(getAllPosts.fulfilled, (state, action) => {
                 state.postLoading = false;
                 state.allPostList = action.payload;
             })
-            .addCase(deletePost.rejected, (state, action) => {
+            .addCase(getAllPosts.rejected, (state, action) => {
                 state.postLoading = false;
                 state.error = action.error.message;
             })

@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { checkAuth, login, logout, signup } from "../api/authApi";
+import { editPassword, editProfile } from "../api/userApi";
 
 const initialState = {
     userData: JSON.parse(localStorage.getItem("userData")) || [],
@@ -66,6 +67,32 @@ const authSlice = createSlice({
             .addCase(checkAuth.rejected, (state, action) => {
                 state.loading = false,
                     state.checkLoading = false,
+                    state.error = action.error.message
+            })
+            // edit profile
+            .addCase(editProfile.pending, (state) => {
+                state.loading = true,
+                    state.error = null
+            })
+            .addCase(editProfile.fulfilled, (state, action) => {
+                state.loading = false,
+                    state.userData = action.payload
+            })
+            .addCase(editProfile.rejected, (state, action) => {
+                state.loading = false,
+                    state.error = action.error.message
+            })
+            // edit password
+            .addCase(editPassword.pending, (state) => {
+                state.loading = true,
+                    state.error = null
+            })
+            .addCase(editPassword.fulfilled, (state, action) => {
+                state.loading = false,
+                    state.userData = action.payload
+            })
+            .addCase(editPassword.rejected, (state, action) => {
+                state.loading = false,
                     state.error = action.error.message
             })
     }

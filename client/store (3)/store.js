@@ -1,14 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit"
 import authSlice from "./slice/authSlice.js"
-import foodSlice from "./slice/foodSlice.js"
+import userSlice from "./slice/userSlice.js"
 import postSlice from "./slice/postSlice.js"
-import orderSlice from "./slice/orderSlice.js"
+import notificationSlice from "./slice/notifactionSlice.js"
 export const store = configureStore({
     reducer: {
         auth: authSlice,
-        food: foodSlice,
+        food: userSlice,
         post: postSlice,
-        order : orderSlice
+        notification: notificationSlice
     },
     devTools: true
 })
