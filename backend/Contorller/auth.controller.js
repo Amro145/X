@@ -2,7 +2,7 @@ import { genTokenAndSetCookie } from "../lib/genToken.js";
 import User from "../Models/auth.model.js";
 import bcrypt from "bcryptjs";
 
-export const singup = async (req, res) => {
+export const signup = async (req, res) => {
   const { userName, email } = req.body
   try {
     const isUserExist = await User.findOne({ email })
@@ -29,7 +29,7 @@ export const singup = async (req, res) => {
 
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Error in Singup", error })
+    return res.status(500).json({ message: "Error in signup", error })
 
 
   }

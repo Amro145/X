@@ -1,89 +1,90 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addTask, deleteAllTasks, deleteOneTask, getAllTasks, updateData, GetOneTask } from "../api/Api";
+import { addItem, deleteFood, editFood, getFoodList, deleteAllFoodsList, getFood } from "../api/foodApi.js";
+
 const initialState = {
-    tasks: [],
+    foodList: [],
     loading: false,
-    error: null
+    error: null,
 }
-const getAllTasksSlice = createSlice({
-    name: "tasks",
+const foodSlice = createSlice({
+    name: "food",
     initialState,
     extraReducers: (builder) => {
         builder
-            .addCase(getAllTasks.pending, (state) => {
+            .addCase(getFoodList.pending, (state) => {
                 state.loading = true,
                     state.error = null
             })
-            .addCase(getAllTasks.fulfilled, (state, action) => {
+            .addCase(getFoodList.fulfilled, (state, action) => {
                 state.loading = false,
-                    state.tasks = action.payload
+                    state.foodList = action.payload
             })
-            .addCase(getAllTasks.rejected, (state, action) => {
+            .addCase(getFoodList.rejected, (state, action) => {
+                state.loading = false,
+                    state.error = action.error.message
+            })
+            .addCase(getFood.pending, (state) => {
+                state.loading = true,
+                    state.error = null
+            })
+            .addCase(getFood.fulfilled, (state, action) => {
+                state.loading = false,
+                    state.foodList = action.payload
+            })
+            .addCase(getFood.rejected, (state, action) => {
+                state.loading = false,
+                    state.error = action.error.message
+            })
+            .addCase(deleteAllFoodsList.pending, (state) => {
+                state.loading = true,
+                    state.error = null
+            })
+            .addCase(deleteAllFoodsList.fulfilled, (state) => {
+                state.loading = false,
+                    state.foodList = []
+            })
+            .addCase(deleteAllFoodsList.rejected, (state, action) => {
+                state.loading = false,
+                    state.error = action.error.message
+            })
+            .addCase(deleteFood.pending, (state) => {
+                state.loading = true,
+                    state.error = null
+            })
+            .addCase(deleteFood.fulfilled, (state, action) => {
+                state.loading = false,
+                    state.foodList = action.payload
+            })
+            .addCase(deleteFood.rejected, (state, action) => {
+                state.loading = false,
+                    state.error = action.error.message
+            })
+            .addCase(editFood.pending, (state) => {
+                state.loading = true,
+                    state.error = null
+            })
+            .addCase(editFood.fulfilled, (state, action) => {
+                state.loading = false,
+                    state.foodList = action.payload
+            })
+            .addCase(editFood.rejected, (state, action) => {
+                state.loading = false,
+                    state.error = action.error.message
+            })
+            .addCase(addItem.pending, (state) => {
+                state.loading = true,
+                    state.error = null
+            })
+            .addCase(addItem.fulfilled, (state, action) => {
+                state.loading = false,
+                    state.foodList = action.payload
+            })
+            .addCase(addItem.rejected, (state, action) => {
                 state.loading = false,
                     state.error = action.error.message
             })
 
-            .addCase(GetOneTask.pending, (state) => {
-                state.loading = true,
-                    state.error = null
-            })
-            .addCase(GetOneTask.fulfilled, (state, action) => {
-                state.loading = false,
-                    state.tasks = action.payload
-            })
-            .addCase(GetOneTask.rejected, (state, action) => {
-                state.loading = false,
-                    state.error = action.error.message
-            })
-            .addCase(deleteAllTasks.pending, (state) => {
-                state.loading = true,
-                    state.error = null
-            })
-            .addCase(deleteAllTasks.fulfilled, (state) => {
-                state.loading = false,
-                    state.tasks = []
-            })
-            .addCase(deleteAllTasks.rejected, (state, action) => {
-                state.loading = false,
-                    state.error = action.error.message
-            })
-            .addCase(deleteOneTask.pending, (state) => {
-                state.loading = true,
-                    state.error = null
-            })
-            .addCase(deleteOneTask.fulfilled, (state, action) => {
-                state.loading = false,
-                    state.tasks = action.payload
-            })
-            .addCase(deleteOneTask.rejected, (state, action) => {
-                state.loading = false,
-                    state.error = action.error.message
-            })
-            .addCase(addTask.pending, (state) => {
-                state.loading = true,
-                    state.error = null
-            })
-            .addCase(addTask.fulfilled, (state, action) => {
-                state.loading = false,
-                    state.tasks = action.payload
-            })
-            .addCase(addTask.rejected, (state, action) => {
-                state.loading = false,
-                    state.error = action.error.message
-            })
-            .addCase(updateData.pending, (state) => {
-                state.loading = true,
-                    state.error = null
-            })
-            .addCase(updateData.fulfilled, (state, action) => {
-                state.loading = false,
-                    state.tasks = action.payload
-            })
-            .addCase(updateData.rejected, (state, action) => {
-                state.loading = false,
-                    state.error = action.error.message
-            })
     }
 })
 
-export default getAllTasksSlice.reducer
+export default foodSlice.reducer

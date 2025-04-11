@@ -71,7 +71,7 @@ function Hero() {
           <div className="divider">or</div>
         </div>
         <div className="sing up flex justify-center mb-5">
-          <Link to="/singup">
+          <Link to="/signup">
             <button className="btn bg-black text-white border-black">
               Create account
             </button>

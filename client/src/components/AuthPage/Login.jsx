@@ -76,7 +76,7 @@ function Login() {
               </button>
 
               <p className="text-white text-lg">Don't have an account??</p>
-              <Link to="/singup">
+              <Link to="/signup">
                 <button className="btn rounded-full btn-info text-white  w-full">
                   Create account
                 </button>

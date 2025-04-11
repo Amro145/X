@@ -57,10 +57,10 @@ export const useAuthStore = create((set, get) => ({
             set({ isRefreshingAuth: false })
         }
     },
-    singup: async (data) => {
+    signup: async (data) => {
         set({ isSingingUp: true })
         try {
-            const res = await myAxios.post("/auth/singup", data)
+            const res = await myAxios.post("/auth/signup", data)
             set({ authUser: res.data.newUser })
             // console.log(res.data);
             toast.success("Hello")

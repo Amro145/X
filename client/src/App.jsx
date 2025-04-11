@@ -1,15 +1,16 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Hero from "./components/AuthPage/Hero";
-import Singup from "./components/AuthPage/Singup";
+import Signup from "./components/AuthPage/Signup";
 import Login from "./components/AuthPage/Login";
 import Home from "./components/Home/Home";
 import Notifiction from "./components/Notifiction/Notifiction";
 import Profile from "./components/profile/Profile";
-import { useAuthStore } from "../store/AuthStore";
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { checkAuth } from "../store (3)/api/authApi";
 
 function App() {
-  const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
+  const { userData, checkLoading } = useSelector((state) => state.auth);
 
   useEffect(() => {
     checkAuth();
@@ -17,7 +18,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      {isCheckingAuth ? (
+      {checkLoading ? (
         <div className="flex justify-center h-screen   items-center absolute top-10 left-1/2">
           <span className={`loading loading-spinner  w-10`} />
         </div>
@@ -25,24 +26,24 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={authUser ? <Home /> : <Navigate to="/login" />}
+            element={userData ? <Home /> : <Navigate to="/login" />}
           />
           <Route
-            path="/singup"
-            element={!authUser ? <Singup /> : <Navigate to="/" />}
+            path="/signup"
+            element={!userData ? <Signup /> : <Navigate to="/" />}
           />
           <Route
             path="/login"
-            element={!authUser ? <Login /> : <Navigate to="/" />}
+            element={!userData ? <Login /> : <Navigate to="/" />}
           />
           <Route path="/hero" element={<Hero />} />
           <Route
             path="/notifiction"
-            element={authUser ? <Notifiction /> : <Navigate to="/login" />}
+            element={userData ? <Notifiction /> : <Navigate to="/login" />}
           />
           <Route
             path="/profile/:username"
-            element={authUser ? <Profile /> : <Navigate to="/login" />}
+            element={userData ? <Profile /> : <Navigate to="/login" />}
           />
         </Routes>
       )}

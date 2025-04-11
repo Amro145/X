@@ -3,8 +3,10 @@ import { MdOutlineMail } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
 import { MdPassword } from "react-icons/md";
 import { Link } from "react-router-dom";
-import { useAuthStore } from "../../../store/AuthStore";
-function Singup() {
+import { useDispatch, useSelector } from "react-redux";
+import { signup } from "../../../store (3)/api/authApi";
+
+function Signup() {
   const [formData, setFormData] = useState({
     userName: "",
     password: "",
@@ -15,7 +17,8 @@ function Singup() {
     email: formData.email[0],
     password: formData.password[0],
   };
-  const { singup, isSingingUp } = useAuthStore();
+  const {  loading } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
   const validateForm = () => {
     if (!cleanData.userName || !cleanData.userName.trim()) {
@@ -34,7 +37,7 @@ function Singup() {
     e.preventDefault();
     const success = validateForm();
     if (success === true) {
-      singup(cleanData);
+      dispatch(signup(cleanData));
     }
   };
   const handleOnChange = (e) => {
@@ -42,7 +45,7 @@ function Singup() {
   };
   return (
     <div className="flex flex-col justify-center items-center md:grid md:grid-cols-12 md:gap-4  w-full h-screen overflow-hidden  ">
-      {isSingingUp ? (
+      {loading ? (
         <div className="flex justify-center h-full  items-center absolute top-40 left-1/2">
           <span className={`loading loading-spinner  w-10`} />
         </div>
@@ -119,4 +122,4 @@ function Singup() {
   );
 }
 
-export default Singup;
+export default Signup;
