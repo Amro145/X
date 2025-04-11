@@ -25,11 +25,11 @@ export const createPost = async (req, res) => {
             image,
         })
         await newPost.save()
-        return res.status(201).json({ newPost, message: "create post succuflly" })
+        return res.status(201).json(newPost)
 
 
     } catch (error) {
-        // console.log("error in create post", error);
+        console.log("error in create post", error);
         return res.status(500).json({ message: "error in create post" })
     }
 }
@@ -51,7 +51,7 @@ export const deletePost = async (req, res) => {
         return res.status(200).json({ message: "Post deleted succufully" })
 
     } catch (error) {
-        // console.log("error in delete post", error);
+        console.log("error in delete post", error);
         return res.status(500).json({ message: "error in delete post" })
     }
 }
@@ -70,9 +70,9 @@ export const commentOnPost = async (req, res) => {
         post.comment.push(comment)
         await post.save()
         const posts = await Post.find()
-        return res.status(201).json({ posts, message: "comment added succefuly" })
+        return res.status(201).json(posts)
     } catch (error) {
-        // console.log("error in add comment", error);
+        console.log("error in add comment", error);
         return res.status(500).json({ message: "error in add comment" })
     }
 }
@@ -114,7 +114,7 @@ export const likeUnlike = async (req, res) => {
 
         }
     } catch (error) {
-        // console.log("error in  like/unlike", error);
+        console.log("error in  like/unlike", error);
         return res.status(500).json({ message: "error in like/unlike" })
     }
 }
@@ -132,7 +132,7 @@ export const getAllPosts = async (req, res) => {
 
     } catch (error) {
 
-        // console.log("error in  get all post", error);
+        console.log("error in  get all post", error);
         return res.status(500).json({ message: "error in get all post" })
     }
 }
@@ -145,18 +145,18 @@ export const getOnePost = async (req, res) => {
         if (!post) {
             return res.status(400).json({ message: "Invalid Id" })
         }
-        return res.status(200).json({ message: "get one post success", post })
+        return res.status(200).json(post)
 
     } catch (error) {
 
-        // console.log("error in  one all post", error);
+        console.log("error in  one all post", error);
         return res.status(500).json({ message: "error in get one post" })
     }
 }
 export const getLikedPosts = async (req, res) => {
     try {
         const me = req.user
-        if (!me) return res.status(494).json({ message: "user not found" })
+        if (!me) return res.status(404).json({ message: "user not found" })
 
         const posts = await Post.find({ _id: { $in: me.likedPosts } })
             .populate({ path: "user", select: "-password" })
@@ -164,7 +164,7 @@ export const getLikedPosts = async (req, res) => {
             .populate({ path: "comment.user", select: "-password" })
         return res.status(200).json(posts)
     } catch (error) {
-        // console.log("error in  get liked post", error);
+        console.log("error in  get liked post", error);
         return res.status(500).json({ message: "error in get liked post" })
 
     }
@@ -180,9 +180,9 @@ export const getFollowingPosts = async (req, res) => {
             .populate({ path: "user", select: "-password" })
             .populate({ path: "likes", select: "-password" })
             .populate({ path: "comment.user", select: "-password" })
-        return res.status(200).json({ followingPosts, message: "get following Post success" })
+        return res.status(200).json(followingPosts)
     } catch (error) {
-        // console.log("error in  get following post", error);
+        console.log("error in  get following post", error);
         return res.status(500).json({ message: "error in get following post" })
 
 
@@ -196,9 +196,10 @@ export const getUserPosts = async (req, res) => {
             .populate({ path: "user", select: "-password" })
             .populate({ path: "likes", select: "-password" })
             .populate({ path: "comment.user", select: "-password" })
-        res.status(200).json({ userPosts, message: "get user postes success" })
+        res.status(200).json(userPosts)
     } catch (error) {
-        // console.log("error in  get user post", error);
+
+        console.log("error in  get user post", error);
         return res.status(500).json({ message: "error in get user post" })
 
 

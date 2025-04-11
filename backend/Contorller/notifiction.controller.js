@@ -11,7 +11,7 @@ export const getNotifictions = async (req, res) => {
         return res.status(200).json(notifiction)
 
     } catch (error) {
-        // console.log("error in get notifictions", error);
+        console.log("error in get notifictions", error);
 
         return res.status(500).json({ message: "error in get notifictions" })
 
@@ -42,7 +42,7 @@ export const deleteOneNotifiction = async (req, res) => {
         await Notification.findByIdAndDelete(notifictionId)
         return res.status(200).json({ message: "Notifiction Deleted " })
     } catch (error) {
-        // console.log("error in delete one notifictions", error);
+        console.log("error in delete one notifictions", error);
         return res.status(500).json({ message: "error in delete one  notifictions" })
     }
 }

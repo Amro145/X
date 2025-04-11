@@ -22,13 +22,13 @@ export const singup = async (req, res) => {
     if (newUser) {
       genTokenAndSetCookie(newUser._id, res)
       await newUser.save()
-      return res.status(201).json({ newUser, message: "Created User Succefully" })
+      return res.status(201).json(newUser)
     } else {
       return res.status(400).json({ message: "Invalid data" })
     }
 
   } catch (error) {
-    // console.log(error);
+    console.log(error);
     return res.status(500).json({ message: "Error in Singup", error })
 
 
@@ -43,7 +43,7 @@ export const login = async (req, res) => {
       return res.status(400).json({ message: "User Name or Password is not correct" })
     }
     genTokenAndSetCookie(user._id, res)
-    res.status(200).json(user, { message: "login Succfully" })
+    res.status(200).json(user)
   } catch (error) {
     return res.status(500).json({ message: "Error in Login ", error })
   }

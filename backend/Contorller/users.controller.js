@@ -10,10 +10,10 @@ export const getUsersProfile = async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: "user not found" })
         }
-        res.status(200).json({ user, message: "get profile succefuly" })
+        res.status(200).json(user)
 
     } catch (error) {
-        // console.log("error in get profile", error);
+        console.log("error in get profile", error);
         return res.status(500).json({ message: "error in get profile" })
 
     }
@@ -49,14 +49,14 @@ export const followUnFollowUser = async (req, res) => {
                 type: "follow",
             })
             await newnotifiction.save()
-            // console.log("id", id, "me",);
+            console.log("id", id, "me",);
 
             return res.status(200).json({ message: " UnFollow", })
 
         }
 
     } catch (error) {
-        // console.log("error in Follow/unfollow user", error);
+        console.log("error in Follow/unfollow user", error);
         return res.status(500).json({ message: "error in Follow/un follow user" })
     }
 }
@@ -80,9 +80,9 @@ export const isGetSuggestedUser = async (req, res) => {
         suggestedUser.forEach(user => {
             user.password = null
         });
-        res.status(200).json({ suggestedUser, message: "get suggested user succefully" })
+        res.status(200).json(suggestedUser)
     } catch (error) {
-        // console.log("get suggesteduser error", error);
+        console.log("get suggesteduser error", error);
         res.status(500).json({ message: "get suggesteduser error" })
 
 
@@ -123,13 +123,13 @@ export const updateProfile = async (req, res) => {
 
         }, { new: true, runValidators: true });
 
-        return res.status(200).json({ updateData, message: "updated succuflly" })
+        return res.status(200).json(updateData)
 
 
     } catch (error) {
-        // console.log("update profile error", error);
+        console.log("update profile error", error);
         res.status(500).json({ message: "update profile error" })
-        // console.log(error);
+        console.log(error);
     }
 }
 
@@ -150,7 +150,7 @@ export const updatePassword = async (req, res) => {
             if (isMatch) {
                 const salt = await bcrypt.genSalt(10)
                 password = await bcrypt.hash(password, salt)
-                // console.log("password Match");
+                console.log("password Match");
 
             } else {
                 return res.status(400).json({ message: "Old Password Is Not Correct Please Try Again" })
@@ -162,9 +162,9 @@ export const updatePassword = async (req, res) => {
         }, { new: true, runValidators: true });
 
 
-        return res.status(200).json({ updateData, message: "updated succuflly" })
+        return res.status(200).json(updateData)
     } catch (error) {
-        // console.log(error);
+        console.log(error);
 
     }
 }
