@@ -11,7 +11,7 @@ export const singup = async (req, res) => {
     }
     // hash password
     const salt = await bcrypt.genSalt(10)
-    const password = await req.body.password 
+    const password = await req.body.password
     const hashedPassword = await bcrypt.hash(password, salt)
     // create user
     const newUser = new User({
@@ -43,7 +43,7 @@ export const login = async (req, res) => {
       return res.status(400).json({ message: "User Name or Password is not correct" })
     }
     genTokenAndSetCookie(user._id, res)
-    res.status(200).json({ user, message: "login Succfully" })
+    res.status(200).json(user, { message: "login Succfully" })
   } catch (error) {
     return res.status(500).json({ message: "Error in Login ", error })
   }
@@ -60,7 +60,7 @@ export const logout = async (req, res) => {
 export const getMe = async (req, res) => {
   try {
     const user = await User.findById(req.user._id)
-    res.status(200).json({ user })
+    res.status(200).json(user)
   } catch (error) {
     return res.status(500).json({ message: "Error in get Me ", error })
 
