@@ -9,6 +9,7 @@ const initialState = {
     post: [],
     postLoading: false,
     creatPostLoading: false,
+    commentLoading: false,
     error: null,
 }
 const postSlice = createSlice({
@@ -76,11 +77,11 @@ const postSlice = createSlice({
                 state.postLoading = true;
                 state.error = null;
             })
-            .addCase(getFollowingPosts.fulfilled, (state, action) => {
+            .addCase(getLikedPosts.fulfilled, (state, action) => {
                 state.postLoading = false;
                 state.likedPostsList = action.payload;
             })
-            .addCase(getFollowingPosts.rejected, (state, action) => {
+            .addCase(getLikedPosts.rejected, (state, action) => {
                 state.postLoading = false;
                 state.error = action.error.message;
             })
@@ -102,25 +103,25 @@ const postSlice = createSlice({
                 state.postLoading = true;
                 state.error = null;
             })
-            .addCase(getAllPosts.fulfilled, (state, action) => {
+            .addCase(deletePost.fulfilled, (state, action) => {
                 state.postLoading = false;
                 state.allPostList = action.payload;
             })
-            .addCase(getAllPosts.rejected, (state, action) => {
+            .addCase(deletePost.rejected, (state, action) => {
                 state.postLoading = false;
                 state.error = action.error.message;
             })
             // comment on  Post
             .addCase(createComment.pending, (state) => {
-                state.postLoading = true;
+                state.commentLoading = true;
                 state.error = null;
             })
             .addCase(createComment.fulfilled, (state, action) => {
-                state.postLoading = false;
+                state.commentLoading = false;
                 state.allPostList = action.payload;
             })
             .addCase(createComment.rejected, (state, action) => {
-                state.postLoading = false;
+                state.commentLoading = false;
                 state.error = action.error.message;
             })
             // like un like on  Post

@@ -2,7 +2,8 @@ import { CiImageOn } from "react-icons/ci";
 import { BsEmojiSmileFill } from "react-icons/bs";
 import { useRef, useState } from "react";
 import { IoCloseSharp } from "react-icons/io5";
-import { useAuthStore } from "../../../../store/AuthStore";
+import { useDispatch, useSelector } from "react-redux";
+import { createPost } from "../../../../store (3)/api/postApi";
 
 const CreatePost = () => {
   const [text, setText] = useState("");
@@ -11,12 +12,14 @@ const CreatePost = () => {
   const imgRef = useRef(null);
 
   const isError = false;
-  const { createPostFn, isCreateingPost, authUser } = useAuthStore();
+  const { creatPostLoading } = useSelector((state) => state.post);
+  const { userData } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // console.log(text);
-    createPostFn({ text: text, image: img });
+    dispatch(createPost({ text: text, image: img }));
     setText("");
     setImg(null);
   };
@@ -38,7 +41,7 @@ const CreatePost = () => {
     >
       <div className="avatar">
         <div className="w-8 rounded-full">
-          <img src={authUser.ProfilePic || "/avatar-placeholder.png"} />
+          <img src={userData.ProfilePic || "/avatar-placeholder.png"} />
         </div>
       </div>
       <form
@@ -77,7 +80,7 @@ const CreatePost = () => {
           </div>
           <input type="file" hidden ref={imgRef} onChange={handleImgChange} />
           <button className="btn btn-primary rounded-full btn-sm text-white px-4">
-            {isCreateingPost ? "Posting..." : "Post"}
+            {creatPostLoading ? "Posting..." : "Post"}
           </button>
         </div>
         {isError && <div className="text-red-500">Something went wrong</div>}

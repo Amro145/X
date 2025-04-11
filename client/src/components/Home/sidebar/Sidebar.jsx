@@ -4,9 +4,12 @@ import { IoNotifications } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { BiLogOut } from "react-icons/bi";
-import { useAuthStore } from "../../../../store/AuthStore";
+import { useDispatch, useSelector } from "react-redux";
+import { Profile } from "../../../../store (3)/api/userApi";
+import { logout } from "../../../../store (3)/api/authApi";
 function Sidbar() {
-  const { authUser, logout, getProfileFn, isCheckingAuth } = useAuthStore();
+  const { userData, checkLoading } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   return (
     <div className=" px-10 hidden md:grid h-screen">
       <Link to="/">
@@ -21,7 +24,7 @@ function Sidbar() {
           </svg>
         </div>
       </Link>
-      {isCheckingAuth ? (
+      {checkLoading ? (
         <div className="flex justify-center h-full  items-center ">
           <span className={`loading loading-spinner  w-10`} />
         </div>
@@ -42,7 +45,7 @@ function Sidbar() {
                 </li>
               </Link>
 
-              <Link to={`/profile/${authUser?.userName || "/"}`}>
+              <Link to={`/profile/${userData?.userName || "/"}`}>
                 <li className="profile flex items-center justify-around py-1 hover:bg-gray-700 cursor-pointer duration-150 rounded-2xl">
                   <FaUser className="w-10 h-10 " />
                   <span className="font-bold">Profile</span>
@@ -54,27 +57,27 @@ function Sidbar() {
           <div className="logout sticky mt-50">
             <div className="flex pr-5">
               <Link
-                to={`/profile/${authUser.userName}`}
+                to={`/profile/${userData.userName}`}
                 className="info flex w-full"
                 onClick={() => {
-                  getProfileFn(authUser.userName);
+                  dispatch(Profile(userData.userName));
                 }}
               >
                 <div className="avatar hidden md:inline-flex">
                   <div className="w-15 h-15 rounded-full">
                     <img
-                      src={authUser?.profileImg || "/avatar-placeholder.png"}
+                      src={userData?.profileImg || "/avatar-placeholder.png"}
                     />
                   </div>
                 </div>
                 <div className="text grid">
-                  <span> {authUser?.userName || "no username"}</span>
-                  <span className="text-gray-700"> @{authUser.userName}</span>
+                  <span> {userData?.userName || "no username"}</span>
+                  <span className="text-gray-700"> @{userData.userName}</span>
                 </div>
               </Link>
 
               <div className="logout">
-                <Link onClick={logout}>
+                <Link onClick={() => dispatch(logout())}>
                   <BiLogOut className="h-8 w-8 cursor-pointer" />
                 </Link>
               </div>

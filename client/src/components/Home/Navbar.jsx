@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import Navbar2 from "./Navbar2";
-import { useAuthStore } from "../../../store/AuthStore";
+import { useDispatch } from "react-redux";
+import { getAllPosts, getFollowingPosts } from "../../../store (3)/api/postApi";
 
 function Navbar() {
   const [type, setType] = useState("for You");
-  const { followingPostFn, allPostFn } = useAuthStore();
+
+  const dispatch = useDispatch();
   return (
     <>
       <Navbar2 />
@@ -15,7 +17,7 @@ function Navbar() {
         <button
           onClick={() => {
             setType("forYou");
-            allPostFn();
+            dispatch(getAllPosts());
           }}
           className="cursor-pointer   hover:bg-secondary bg-transparent transition delay-100 duration-200 ease-in w-full flex justify-center"
         >
@@ -27,7 +29,7 @@ function Navbar() {
         <button
           onClick={() => {
             setType("following");
-            followingPostFn();
+            dispatch(getFollowingPosts());
           }}
           className="relative cursor-pointer hover:bg-secondary bg-transparent transition delay-100 duration-200 ease-in w-full flex justify-center"
         >

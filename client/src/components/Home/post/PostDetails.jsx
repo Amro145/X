@@ -5,33 +5,32 @@ import { FaRegHeart } from "react-icons/fa";
 import { FaRegBookmark } from "react-icons/fa6";
 import { FaTrash } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { useAuthStore } from "../../../../store/AuthStore";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  createComment,
+  deletePost,
+  likeUnLike,
+} from "../../../../store (3)/api/postApi";
 function PostDetails({ onePost }) {
   const formatedDate = "1h";
   const [comment, setComment] = useState("");
   const [isBookmark, setIsBookmark] = useState(false);
   const [post, setPosts] = useState([]);
   const [isLike, setLike] = useState(false);
-  const {
-    authUser,
-    deletePostFn,
-    addCommentFn,
-    isCommenting,
-    likeUnLikeFn,
-    allPost,
-    isCreateingPost,
-    isGettingPost,
-  } = useAuthStore();
+  const { postLoading, allPostList, commentLoading, creatPostLoading } =
+    useSelector((state) => state.post);
+  const { userData } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     post.length !== 0 &&
-      !isGettingPost &&
-      setLike(post.likes.includes(authUser._id));
-  }, [post, isGettingPost]);
+      !postLoading &&
+      setLike(post.likes.includes(userData._id));
+  }, [post, postLoading]);
 
   useEffect(() => {
     setPosts(onePost);
-  }, [allPost, isGettingPost]);
+  }, [allPostList, postLoading]);
 
   const handleBookmark = () => {
     setIsBookmark(!isBookmark);
@@ -39,16 +38,16 @@ function PostDetails({ onePost }) {
 
   return (
     <>
-      {isGettingPost ? (
+      {postLoading ? (
         <div className="flex justify-center h-full items-center">
           <span className={`loading loading-spinner `} />
         </div>
       ) : (
-        allPost?.length === 0 && (
+        allPostList?.length === 0 && (
           <p className="text-center my-4">No posts in this tab. Switch 👻</p>
         )
       )}
-      {!isGettingPost && post.length !== 0 && post && (
+      {!postLoading && post.length !== 0 && post && (
         <div className="border-b border-gray-700 pt-5 pb-2 ">
           <div className="postInfo flex justify-between items-center pr-10 text-start">
             <div className="userinfo">
@@ -82,16 +81,16 @@ function PostDetails({ onePost }) {
                 <span className="text-gray-400">{formatedDate}</span>
               </Link>
             </div>
-            {!isCreateingPost &&
-              !isGettingPost &&
+            {!creatPostLoading &&
+              !postLoading &&
               post &&
               post.length !== 0 &&
               post.user !== undefined &&
-              post.user._id?.toString() === authUser._id?.toString() && (
+              post.user._id?.toString() === userData._id?.toString() && (
                 <div
                   className="trash"
                   onClick={() => {
-                    deletePostFn(post._id);
+                    dispatch(deletePost(post._id));
                   }}
                 >
                   <FaTrash className="cursor-pointer hover:text-red-700" />
@@ -170,7 +169,7 @@ function PostDetails({ onePost }) {
                       className="flex gap-2 items-center mt-4 border-t border-gray-600 pt-2"
                       onSubmit={(e) => {
                         e.preventDefault();
-                        addCommentFn(post._id, { text: comment });
+                        dispatch(createComment(post._id, { text: comment }));
                         setComment("");
                       }}
                     >
@@ -181,7 +180,7 @@ function PostDetails({ onePost }) {
                         onChange={(e) => setComment(e.target.value)}
                       />
                       <button className="btn btn-primary rounded-full btn-sm text-white px-4">
-                        {isCommenting ? (
+                        {commentLoading ? (
                           <span className="loading loading-spinner loading-md"></span>
                         ) : (
                           "comment"
@@ -200,7 +199,7 @@ function PostDetails({ onePost }) {
               <div
                 className="like flex gap-1 items-center cursor-pointer group "
                 onClick={() => {
-                  likeUnLikeFn(post._id);
+                  dispatch(likeUnLike(post._id));
                 }}
               >
                 {isLike ? (

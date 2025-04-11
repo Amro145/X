@@ -4,6 +4,7 @@ import { followUnFollow, Profile, suggestedUser } from "../api/userApi";
 const initialState = {
     myProfile: [],
     suggestedUserList: [],
+    suggestedLoading : false,
     followStatus: [],
     loading: false,
     error: null,
@@ -27,15 +28,15 @@ const userSlice = createSlice({
             })
             // suggested User
             .addCase(suggestedUser.pending, (state) => {
-                state.loading = true,
+                state.suggestedLoading = true,
                     state.error = null
             })
             .addCase(suggestedUser.fulfilled, (state, action) => {
-                state.loading = false,
+                state.suggestedLoading = false,
                     state.suggestedUserList = action.payload
             })
             .addCase(suggestedUser.rejected, (state, action) => {
-                state.loading = false,
+                state.suggestedLoading = false,
                     state.error = action.error.message
             })
 

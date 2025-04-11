@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import { MdOutlineMail } from "react-icons/md";
 import { MdPassword } from "react-icons/md";
 import { Link } from "react-router-dom";
-import { useAuthStore } from "../../../store/AuthStore";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../../../store (3)/api/authApi";
+
 function Login() {
-  const { login, isLogining } = useAuthStore();
+  const { loading } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -18,11 +21,11 @@ function Login() {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    login(cleanData);
+    dispatch(login(cleanData));
   };
   return (
     <div className="flex flex-col justify-center items-center md:grid md:grid-cols-12 md:gap-4  w-full h-screen overflow-hidden  ">
-      {isLogining ? (
+      {loading ? (
         <div className="flex justify-center h-full  items-center absolute top-40 left-1/2">
           <span className={`loading loading-spinner  w-10`} />
         </div>

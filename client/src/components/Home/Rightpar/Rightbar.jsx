@@ -1,23 +1,20 @@
 import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { useAuthStore } from "../../../../store/AuthStore";
+import {
+  followUnFollow,
+  suggestedUser,
+} from "../../../../store (3)/api/userApi";
 
 function Rightbar() {
-  const {
-    suggested,
-    suggestedUserFn,
-    isGetSuggested,
-    getProfileFn,
-    followFn,
-    refreshData,
-    userPostFn,
-  } = useAuthStore();
+  const { suggestedLoading, suggestedUserList } = useSelector( (state) => state.user);
+  const dispatch = useDispatch();
   useEffect(() => {
-    suggestedUserFn();
+    dispatch(suggestedUser());
   }, []);
   return (
     <div className="hidden md:block my-4 ">
-      {isGetSuggested && (
+      {suggestedLoading && (
         <>
           <>
             <div className="flex flex-col gap-2 w-52 my-2">
@@ -74,16 +71,18 @@ function Rightbar() {
         </>
       )}
 
-      {!isGetSuggested && suggested !== null && suggested.length !== 0 ? (
-        suggested?.suggestedUser.map((user) => {
+      {!suggestedLoading &&
+      suggestedUserList !== null &&
+      suggestedUserList.length !== 0 ? (
+        suggestedUserList?.map((user) => {
           return (
             <div className="flex  " key={user._id}>
               <Link
                 to={`/profile/${user.userName}`}
-                onClick={() => {
-                  getProfileFn(user.userName);
-                  userPostFn(user._id);
-                }}
+                // onClick={() => {
+                //   getProfileFn(user.userName);
+                //   userPostFn(user._id);
+                // }}
               >
                 <div className="user flex py-2 ">
                   <div className="avatar p-2">
@@ -99,14 +98,17 @@ function Rightbar() {
                   </div>
                 </div>
               </Link>
-              <div className="button" onClick={() => followFn(user._id)}>
+              <div
+                className="button"
+                onClick={() => dispatch(followUnFollow(user._id))}
+              >
                 <button
                   className="btn bg-white text-black hover:bg-white hover:opacity-90 rounded-full btn-sm"
                   onClick={(e) => {
                     e.preventDefault();
                   }}
                 >
-                  {refreshData?.following.includes(user._id)
+                  {suggestedUserList[0]?.following.includes(user._id)
                     ? "unFollow"
                     : "follow"}
                 </button>
