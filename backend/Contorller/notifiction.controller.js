@@ -40,7 +40,8 @@ export const deleteOneNotifiction = async (req, res) => {
         if (notification.to.toString() !== me._id.toString()) return res.status(403).json({ message: "Not Authriztion" })
 
         await Notification.findByIdAndDelete(notifictionId)
-        return res.status(200).json({ message: "Notifiction Deleted " })
+        const notifications = await Notification.find()
+        return res.status(200).json(notifications)
     } catch (error) {
         console.log("error in delete one notifictions", error);
         return res.status(500).json({ message: "error in delete one  notifictions" })

@@ -25,7 +25,8 @@ export const createPost = async (req, res) => {
             image,
         })
         await newPost.save()
-        return res.status(201).json(newPost)
+        const posts = await Post.find()
+        return res.status(201).json(posts)
 
 
     } catch (error) {
@@ -48,7 +49,8 @@ export const deletePost = async (req, res) => {
             await cloudinary.uploader.destroy(imageId)
         }
         await Post.findByIdAndDelete(post._id)
-        return res.status(200).json({ message: "Post deleted succufully" })
+        const posts = await Post.find()
+        return res.status(200).json(posts)
 
     } catch (error) {
         console.log("error in delete post", error);
@@ -62,7 +64,6 @@ export const commentOnPost = async (req, res) => {
         const { text } = req.body
 
         const post = await Post.findById(postId)
-        const allpost = await Post.find()
         if (!post) {
             return res.status(404).json({ message: "post not found " })
         }
@@ -99,19 +100,17 @@ export const likeUnlike = async (req, res) => {
             const posts = await Post.find().sort({ createdAt: -1 })
                 .populate({ path: "user", select: "-password" })
                 .populate({ path: "comment.user", select: "-password" })
-            const postsToCheckLike = await Post.find()
+            return res.status(200).json(posts)
 
-            return res.status(200).json({ posts, postsToCheckLike, status: true })
+
         } else {
             await Post.updateOne({ _id: postId }, { $pull: { likes: me._id } })
             await User.updateOne({ _id: me._id }, { $pull: { likedPosts: postId } })
-            const postsToCheckLike = await Post.find()
             const posts = await Post.find().sort({ createdAt: -1 })
                 .populate({ path: "user", select: "-password" })
                 .populate({ path: "comment.user", select: "-password" })
 
-            return res.status(200).json({ posts, status: false })
-
+            return res.status(200).json(posts)
         }
     } catch (error) {
         console.log("error in  like/unlike", error);
@@ -123,12 +122,11 @@ export const getAllPosts = async (req, res) => {
         const posts = await Post.find().sort({ createdAt: -1 })
             .populate({ path: "user", select: "-password" })
             .populate({ path: "comment.user", select: "-password" })
-        const postsToCheckLike = await Post.find()
 
         if (posts.length === 0) {
             return res.status(200).json([])
         }
-        return res.status(200).json({ message: "get all post success", posts, postsToCheckLike })
+        return res.status(200).json(posts)
 
     } catch (error) {
 
