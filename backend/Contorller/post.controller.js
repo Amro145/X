@@ -201,12 +201,11 @@ export const getUserPosts = async (req, res) => {
             .populate({ path: "user", select: "-password" })
             .populate({ path: "likes", select: "-password" })
             .populate({ path: "comment.user", select: "-password" })
+        if (!user) return res.status(404).json({ message: "user not found" })
         res.status(200).json(userPosts)
     } catch (error) {
-
         console.log("error in  get user post", error);
         return res.status(500).json({ message: "error in get user post" })
-
-
     }
+
 }

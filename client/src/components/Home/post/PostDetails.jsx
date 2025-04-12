@@ -35,13 +35,14 @@ function PostDetails({ onePost }) {
     dispatch(deletePost(data));
   };
 
-  const handleLike = (data) => {
-    dispatch(likeUnLike(data));
+  const handleLike = async (data) => {
+    await dispatch(likeUnLike(data));
   };
   useEffect(() => {
-    post.length !== 0 &&
-      !postLoading &&
+    if (post.length !== 0 && !postLoading) {
       setLike(post.likes.includes(userData._id));
+      console.log(post.likes);
+    }
   }, [post, postLoading]);
   const handleCommentSubmit = (e) => {
     e.preventDefault();
@@ -51,15 +52,6 @@ function PostDetails({ onePost }) {
 
   return (
     <>
-      {postLoading ? (
-        <div className="flex justify-center h-full items-center">
-          <span className={`loading loading-spinner `} />
-        </div>
-      ) : (
-        allPostList?.length === 0 && (
-          <p className="text-center my-4">No posts in this tab. Switch 👻</p>
-        )
-      )}
       {!postLoading && post.length !== 0 && post && (
         <div className="border-b border-gray-700 pt-5 pb-2 ">
           <div className="postInfo flex justify-between items-center pr-10 text-start">
@@ -214,12 +206,12 @@ function PostDetails({ onePost }) {
                 {isLike ? (
                   <>
                     <FaRegHeart className="w-4 h-4 cursor-pointer shadow text-pink-500" />
-                    <span className="text-pink-500">{post.likes.length}</span>
+                    <span className="text-pink-500">{post?.likes?.length}</span>
                   </>
                 ) : (
                   <>
                     <FaRegHeart className="w-4 h-4 cursor-pointer " />
-                    <span>{post.likes.length}</span>
+                    <span>{post?.likes?.length}</span>
                   </>
                 )}
               </div>

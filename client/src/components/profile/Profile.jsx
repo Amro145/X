@@ -8,13 +8,13 @@ import PostDetails from "../Home/post/PostDetails";
 import EditProfile from "./EditProfile";
 import FollowUnfollow from "./FollowUnfollow";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserPosts } from "../../../store (3)/api/postApi";
+import { getAllPosts } from "../../../store (3)/api/postApi";
 import { ProfileFn } from "../../../store (3)/api/userApi";
 
 function Profile() {
   const { myProfile, profileLoading } = useSelector((state) => state.user);
   const { userData } = useSelector((state) => state.auth);
-  const { loading, userPostsList } = useSelector((state) => state.post);
+  const { postLoading, allPostList } = useSelector((state) => state.post);
   const [isMyProfile, setIsMyProfile] = useState(false);
   const [coverPic, setcoverPic] = useState(null);
   const [profilePic, setprofilePic] = useState(null);
@@ -38,25 +38,22 @@ function Profile() {
 
   useEffect(() => {
     dispatch(ProfileFn(params.username));
-  }, []);
+  }, [dispatch]);
+  useEffect(() => {
+    if (!profileLoading && myProfile._id !== undefined) dispatch(getAllPosts());
+  }, [dispatch, myProfile, profileLoading]);
 
+  const filtered = allPostList.filter(item => item.user.userName === params.username);
   useEffect(() => {
     if (!profileLoading) {
       setIsMyProfile(params.username === userData.userName);
     }
   }, [profileLoading, userData, params.username]);
-  useEffect(() => {
-    if (!profileLoading && myProfile._id !== undefined) {
-      console.log(myProfile?._id);
-      dispatch(getUserPosts(myProfile._id));
-    }
-  }, [myProfile._id, profileLoading, dispatch]);
 
   return (
     <>
       {profileLoading && (
-        <div className="flex flex-col gap-2 w-full my-2 p-4">
-        </div>
+        <div className="flex flex-col gap-2 w-full my-2 p-4"></div>
       )}
       {!profileLoading && myProfile ? (
         <>
@@ -174,22 +171,21 @@ function Profile() {
               </div>
             </div>
             <div className="post">
-              {loading && (
-                <div className="flex flex-col justify-center">
-                  {/* Skeleton loading UI */}
+              {postLoading && (
+                <div className="flex justify-center h-full items-center absolute top-40 left-1/2">
+                  <span className="loading loading-spinner w-10" />
                 </div>
               )}
-              {!loading &&
-                userPostsList &&
-                userPostsList.length > 0 &&
-                userPostsList.map((post) => (
-                  <PostDetails key={post._id} onePost={post} />
-                ))}
-              {!loading && userPostsList?.length === 0 && (
+              {!postLoading && filtered?.length === 0 && (
                 <p className="text-center my-4">
                   No posts in this tab. Switch 👻
                 </p>
               )}
+              {!postLoading &&
+                filtered?.length > 0 &&
+                filtered.map((post) => (
+                  <PostDetails key={post._id} onePost={post} />
+                ))}
             </div>
           </div>
         </>
