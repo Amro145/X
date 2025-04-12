@@ -11,6 +11,7 @@ import {
   deletePost,
   likeUnLike,
 } from "../../../../store (3)/api/postApi";
+
 function PostDetails({ onePost }) {
   const formatedDate = "1h";
   const [comment, setComment] = useState("");
@@ -23,17 +24,29 @@ function PostDetails({ onePost }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    post.length !== 0 &&
-      !postLoading &&
-      setLike(post.likes.includes(userData._id));
-  }, [post, postLoading]);
-
-  useEffect(() => {
     setPosts(onePost);
   }, [allPostList, postLoading]);
 
   const handleBookmark = () => {
     setIsBookmark(!isBookmark);
+  };
+
+  const handleDelete = (data) => {
+    dispatch(deletePost(data));
+  };
+
+  const handleLike = (data) => {
+    dispatch(likeUnLike(data));
+  };
+  useEffect(() => {
+    post.length !== 0 &&
+      !postLoading &&
+      setLike(post.likes.includes(userData._id));
+  }, [post, postLoading]);
+  const handleCommentSubmit = (e) => {
+    e.preventDefault();
+    dispatch(createComment({ id: post._id, data: { text: comment } }));
+    setComment("");
   };
 
   return (
@@ -90,7 +103,7 @@ function PostDetails({ onePost }) {
                 <div
                   className="trash"
                   onClick={() => {
-                    dispatch(deletePost(post._id));
+                    handleDelete(post._id);
                   }}
                 >
                   <FaTrash className="cursor-pointer hover:text-red-700" />
@@ -167,11 +180,7 @@ function PostDetails({ onePost }) {
                     </div>
                     <form
                       className="flex gap-2 items-center mt-4 border-t border-gray-600 pt-2"
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        dispatch(createComment(post._id, { text: comment }));
-                        setComment("");
-                      }}
+                      onSubmit={handleCommentSubmit}
                     >
                       <textarea
                         className="textarea w-full p-1 rounded text-md resize-none border focus:outline-none  border-gray-800"
@@ -197,14 +206,14 @@ function PostDetails({ onePost }) {
                 <BiRepost className="w-7 h-7  text-slate-500 group-hover:text-sky-400" />
               </div>
               <div
-                className="like flex gap-1 items-center cursor-pointer group "
+                className="like flex gap-1 items-center cursor-pointer group hover:text-pink-400  "
                 onClick={() => {
-                  dispatch(likeUnLike(post._id));
+                  handleLike(post._id);
                 }}
               >
                 {isLike ? (
                   <>
-                    <FaRegHeart className="w-4 h-4 cursor-pointer text-pink-500 " />
+                    <FaRegHeart className="w-4 h-4 cursor-pointer shadow text-pink-500" />
                     <span className="text-pink-500">{post.likes.length}</span>
                   </>
                 ) : (

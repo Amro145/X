@@ -6,7 +6,7 @@ import notificationSlice from "./slice/notifactionSlice.js"
 export const store = configureStore({
     reducer: {
         auth: authSlice,
-        food: userSlice,
+        user: userSlice,
         post: postSlice,
         notification: notificationSlice
     },

@@ -44,6 +44,12 @@ export const login = async (req, res) => {
     }
     genTokenAndSetCookie(user._id, res)
     res.status(200).json(user)
+    res.cookie("jwt", token, {
+      httpOnly: true,
+      secure: false, // خليه true لو شغال على HTTPS
+      sameSite: "lax", // أو "none" لو دومين مختلف + secure=true
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 أيام
+    });
   } catch (error) {
     return res.status(500).json({ message: "Error in Login ", error })
   }

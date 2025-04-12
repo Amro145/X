@@ -59,62 +59,69 @@ export const deletePost = async (req, res) => {
 }
 export const commentOnPost = async (req, res) => {
     try {
-        const me = req.user
-        const postId = req.params.id
-        const { text } = req.body
+        const me = req.user;
+        const postId = req.params.id;
+        const { text } = req.body;
 
-        const post = await Post.findById(postId)
+        const post = await Post.findById(postId);
         if (!post) {
-            return res.status(404).json({ message: "post not found " })
+            return res.status(404).json({ message: "Post not found" });
         }
-        const comment = { user: me._id, text }
-        post.comment.push(comment)
-        await post.save()
+
+        const comment = { user: me._id, text };
+        post.comment.push(comment);
+        await post.save();
+
+        // Fetch updated posts with populated user and comment.user fields
         const posts = await Post.find()
-        return res.status(201).json(posts)
+            .sort({ createdAt: -1 })
+            .populate({ path: "user", select: "-password" })
+            .populate({ path: "comment.user", select: "-password" });
+
+        return res.status(201).json(posts);
     } catch (error) {
-        console.log("error in add comment", error);
-        return res.status(500).json({ message: "error in add comment" })
+        console.log("Error in adding comment:", error);
+        return res.status(500).json({ message: "Error in adding comment" });
     }
-}
+};
 export const likeUnlike = async (req, res) => {
     try {
-        const me = req.user
-        const postId = req.params.id
-        const post = await Post.findById(postId)
+        console.log("User in likeUnlike:", req.user); // Debug log
+        const me = req.user;
+        const postId = req.params.id;
+        const post = await Post.findById(postId);
         if (!post) {
-            return res.status(404).json({ message: "post not found" })
+            return res.status(404).json({ message: "Post not found" });
         }
-        const isLike = post.likes.includes(me._id)
+        const isLike = post.likes.includes(me._id);
         if (!isLike) {
-            await Post.updateOne({ _id: postId }, { $push: { likes: me._id } })
-            await User.updateOne({ _id: me._id }, { $push: { likedPosts: postId } })
+            await Post.updateOne({ _id: postId }, { $push: { likes: me._id } });
+            await User.updateOne({ _id: me._id }, { $push: { likedPosts: postId } });
             if (me._id.toString() !== post.user.toString()) {
-                const newnotifiction = new Notification({
+                const newNotification = new Notification({
                     from: me._id,
                     to: post.user,
-                    type: "like"
-                })
-                await newnotifiction.save()
+                    type: "like",
+                });
+                await newNotification.save();
             }
-            const posts = await Post.find().sort({ createdAt: -1 })
+            const posts = await Post.find()
+                .sort({ createdAt: -1 })
                 .populate({ path: "user", select: "-password" })
-                .populate({ path: "comment.user", select: "-password" })
-            return res.status(200).json(posts)
-
-
+                .populate({ path: "comment.user", select: "-password" });
+            return res.status(200).json(posts);
         } else {
-            await Post.updateOne({ _id: postId }, { $pull: { likes: me._id } })
-            await User.updateOne({ _id: me._id }, { $pull: { likedPosts: postId } })
-            const posts = await Post.find().sort({ createdAt: -1 })
+            await Post.updateOne({ _id: postId }, { $pull: { likes: me._id } });
+            await User.updateOne({ _id: me._id }, { $pull: { likedPosts: postId } });
+            const posts = await Post.find()
+                .sort({ createdAt: -1 })
                 .populate({ path: "user", select: "-password" })
-                .populate({ path: "comment.user", select: "-password" })
-
-            return res.status(200).json(posts)
+                .populate({ path: "comment.user", select: "-password" });
+            return res.status(200).json(posts);
         }
     } catch (error) {
-        console.log("error in  like/unlike", error);
-        return res.status(500).json({ message: "error in like/unlike" })
+        console.log(error);
+        return res.status(500).json({ message: "Error in like/unlike", error });
     }
 }
 export const getAllPosts = async (req, res) => {

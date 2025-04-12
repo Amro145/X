@@ -1,9 +1,11 @@
 import React from "react";
 import { useAuthStore } from "../../../store/AuthStore";
+// import { useSelector } from "react-redux";
 
 function FollowUnfollow() {
   const { followFn, gettingProfile, frindProfile, refreshData } =
     useAuthStore();
+    // const {followStatus} = useSelector((state) => state.user)
 
   return (
     <button

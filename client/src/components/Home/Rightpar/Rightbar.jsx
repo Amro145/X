@@ -3,15 +3,23 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
   followUnFollow,
+  ProfileFn,
   suggestedUser,
 } from "../../../../store (3)/api/userApi";
+import { getUserPosts } from "../../../../store (3)/api/postApi";
 
 function Rightbar() {
-  const { suggestedLoading, suggestedUserList } = useSelector( (state) => state.user);
+  const { suggestedUserList, suggestedLoading } = useSelector(
+    (state) => state.user
+  );
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(suggestedUser());
-  }, []);
+  }, [dispatch]);
+  const handleProfileClick = (userId) => {
+    dispatch(ProfileFn(userId));
+    dispatch(getUserPosts(userId));
+  };
   return (
     <div className="hidden md:block my-4 ">
       {suggestedLoading && (
@@ -79,10 +87,9 @@ function Rightbar() {
             <div className="flex  " key={user._id}>
               <Link
                 to={`/profile/${user.userName}`}
-                // onClick={() => {
-                //   getProfileFn(user.userName);
-                //   userPostFn(user._id);
-                // }}
+                onClick={() => {
+                  handleProfileClick(user._id);
+                }}
               >
                 <div className="user flex py-2 ">
                   <div className="avatar p-2">
@@ -108,9 +115,8 @@ function Rightbar() {
                     e.preventDefault();
                   }}
                 >
-                  {suggestedUserList[0]?.following.includes(user._id)
-                    ? "unFollow"
-                    : "follow"}
+                  {user?.following.includes(user._id) ? "unFollow" : "follow"}
+                  follow
                 </button>
               </div>
             </div>

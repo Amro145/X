@@ -6,16 +6,17 @@ import Home from "./components/Home/Home";
 import Notifiction from "./components/Notifiction/Notifiction";
 import Profile from "./components/profile/Profile";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { checkAuth } from "../store (3)/api/authApi";
 
 function App() {
   const { userData, checkLoading } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    checkAuth();
-  }, []);
-
+    dispatch(checkAuth());
+  }, [dispatch]);
+console.log(userData)
   return (
     <BrowserRouter>
       {checkLoading ? (
@@ -26,24 +27,24 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={userData ? <Home /> : <Navigate to="/login" />}
+            element={userData.length !== 0 ? <Home /> : <Navigate to="/login" />}
           />
           <Route
             path="/signup"
-            element={!userData ? <Signup /> : <Navigate to="/" />}
+            element={userData.length === 0 ? <Signup /> : <Navigate to="/" />}
           />
           <Route
             path="/login"
-            element={!userData ? <Login /> : <Navigate to="/" />}
+            element={userData.length === 0 ? <Login /> : <Navigate to="/" />}
           />
           <Route path="/hero" element={<Hero />} />
           <Route
             path="/notifiction"
-            element={userData ? <Notifiction /> : <Navigate to="/login" />}
+            element={userData.length !== 0 ? <Notifiction /> : <Navigate to="/login" />}
           />
           <Route
             path="/profile/:username"
-            element={userData ? <Profile /> : <Navigate to="/login" />}
+            element={userData.length !== 0 ? <Profile /> : <Navigate to="/login" />}
           />
         </Routes>
       )}

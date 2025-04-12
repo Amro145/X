@@ -126,7 +126,7 @@ const postSlice = createSlice({
             })
             // like un like on  Post
             .addCase(likeUnLike.pending, (state) => {
-                state.postLoading = true;
+                state.postLoading = false;
                 state.error = null;
             })
             .addCase(likeUnLike.fulfilled, (state, action) => {

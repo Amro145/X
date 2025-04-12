@@ -19,9 +19,8 @@ function Login() {
   const handleonChange = (e) => {
     setFormData({ ...formData, [e.target.name]: [e.target.value] });
   };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    dispatch(login(cleanData));
+  const handleSubmit = (data) => {
+    dispatch(login(data));
   };
   return (
     <div className="flex flex-col justify-center items-center md:grid md:grid-cols-12 md:gap-4  w-full h-screen overflow-hidden  ">
@@ -73,7 +72,10 @@ function Login() {
             <div className="flex flex-col lg:w-2/3 gap-2 mt-4">
               <button
                 className="btn rounded-full btn-primary text-white btn-outline w-full"
-                onClick={handleSubmit}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleSubmit(cleanData);
+                }}
               >
                 Login
               </button>

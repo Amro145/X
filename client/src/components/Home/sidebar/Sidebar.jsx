@@ -5,7 +5,7 @@ import { FaUser } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { BiLogOut } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
-import { Profile } from "../../../../store (3)/api/userApi";
+import { ProfileFn } from "../../../../store (3)/api/userApi";
 import { logout } from "../../../../store (3)/api/authApi";
 function Sidbar() {
   const { userData, checkLoading } = useSelector((state) => state.auth);
@@ -60,7 +60,7 @@ function Sidbar() {
                 to={`/profile/${userData.userName}`}
                 className="info flex w-full"
                 onClick={() => {
-                  dispatch(Profile(userData.userName));
+                  dispatch(ProfileFn(userData.userName));
                 }}
               >
                 <div className="avatar hidden md:inline-flex">

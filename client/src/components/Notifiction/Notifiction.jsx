@@ -3,25 +3,33 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { FaTrash, FaUser } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa6";
 import { Link, Links } from "react-router-dom";
-import { useAuthStore } from "../../../store/AuthStore";
 import Navbar2 from "../Home/Navbar2";
 import { BiLeftArrow, BiSolidLeftArrowCircle } from "react-icons/bi";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  deleteNotifications,
+  deleteOneNotifications,
+  notification,
+} from "../../../store (3)/api/notificationApi";
 function Notifiction() {
-  const {
-    notifictionFn,
-    notifiction,
-    deleteNotifictionFn,
-    isGettingNotifiction,
-    deleteAllNotifictionFn,
-  } = useAuthStore();
+  const { notificationList, notifiactionLoading } = useSelector(
+    (state) => state.notifiction
+  );
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    notifictionFn();
+    dispatch(notification());
   }, []);
+  const handleDelete = () => {
+    dispatch(deleteNotifications());
+  };
+  const handleDeleteOneNotifiaction = (id) => {
+    dispatch(deleteOneNotifications(id));
+  };
 
   return (
     <div className="w-full h-screen">
-      {isGettingNotifiction && (
+      {notifiactionLoading && (
         <div className="flex justify-center h-full items-center">
           <span className={`loading loading-spinner `} />
         </div>
@@ -34,7 +42,7 @@ function Notifiction() {
           </Link>
           <div className="dropdown cursor-pointer ">
             <div tabIndex={0} role="button" className="m-1">
-              {notifiction.length !== 0 && (
+              {notificationList.length !== 0 && (
                 <IoSettingsOutline className="w-4" />
               )}
             </div>
@@ -43,20 +51,20 @@ function Notifiction() {
               className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
             >
               <li>
-                <a onClick={deleteAllNotifictionFn}>Delete all notifiction</a>
+                <a onClick={handleDelete}>Delete all notifiction</a>
               </li>
             </ul>
           </div>
         </div>
-        {!isGettingNotifiction && notifiction.length === 0 && (
+        {!notifiactionLoading && notificationList.length === 0 && (
           <p className=" flex  justify-center mt-10 font-bold">
             No Notifiction
           </p>
         )}
-        {notifiction !== undefined &&
-          notifiction.length !== 0 &&
-          !isGettingNotifiction &&
-          notifiction.map((notifiction) => {
+        {notificationList !== undefined &&
+          notificationList.length !== 0 &&
+          !notifiactionLoading &&
+          notificationList.map((notifiction) => {
             return (
               <div
                 key={notifiction._id}
@@ -103,7 +111,7 @@ function Notifiction() {
                 <div className="right">
                   <FaTrash
                     className="cursor-pointer hover:text-red-700"
-                    onClick={() => deleteNotifictionFn(notifiction._id)}
+                    onClick={() => handleDeleteOneNotifiaction(notifiction._id)}
                   />
                 </div>
               </div>

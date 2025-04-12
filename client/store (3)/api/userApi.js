@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios"
 
-export const Profile = createAsyncThunk("user/Profile", async (name) => {
+export const ProfileFn = createAsyncThunk("user/Profile", async (name) => {
     const res = await axios.get(`http://localhost:8000/api/users/profile/${name}`, { withCredentials: true })
     return res.data
 })

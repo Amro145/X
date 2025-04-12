@@ -1,13 +1,15 @@
 import React, { useState } from "react";
-import { useAuthStore } from "../../../store/AuthStore";
+import { useDispatch, useSelector } from "react-redux";
+import { editPassword, editProfile } from "../../../store (3)/api/userApi";
 
 function EditProfile() {
-  const { authUser, updateProfileFn, updatePasswordFn } = useAuthStore();
+  const { userData } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
-    userName: authUser.userName,
-    email: authUser.email,
-    bio: authUser.bio,
-    link: authUser.link,
+    userName: userData.userName,
+    email: userData.email,
+    bio: userData.bio,
+    link: userData.link,
     password: "",
     oldPassword: "",
   });
@@ -24,7 +26,12 @@ function EditProfile() {
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value }); // Fix: Remove array brackets
   };
-
+  const handleUpdateProfile = (data) => {
+    dispatch(editProfile(data));
+  };
+  const handleUpdatePassword = (data) => {
+    dispatch(editPassword(data));
+  };
   return (
     <div className="pl-10 mt-10">
       <button
@@ -52,8 +59,7 @@ function EditProfile() {
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                updateProfileFn(cleanData);
-                // console.log(cleanData);
+                handleUpdateProfile(cleanData);
               }}
             >
               <div className="one flex gap-5 my-2 ">
@@ -111,7 +117,7 @@ function EditProfile() {
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                updatePasswordFn(PasswordData);
+                handleUpdatePassword(PasswordData);
               }}
             >
               <div className="tow flex gap-5 my-2">
