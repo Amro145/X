@@ -43,7 +43,9 @@ function Profile() {
     if (!profileLoading && myProfile._id !== undefined) dispatch(getAllPosts());
   }, [dispatch, myProfile, profileLoading]);
 
-  const filtered = allPostList.filter(item => item.user.userName === params.username);
+  const filtered = allPostList.filter(
+    (item) => item.user.userName === params.username
+  );
   useEffect(() => {
     if (!profileLoading) {
       setIsMyProfile(params.username === userData.userName);
@@ -53,7 +55,9 @@ function Profile() {
   return (
     <>
       {profileLoading && (
-        <div className="flex flex-col gap-2 w-full my-2 p-4"></div>
+        <div class="flex justify-center items-center h-screen">
+          <div class="animate-spin rounded-full h-16 w-16 border-4 border-blue-500 border-t-transparent"></div>
+        </div>
       )}
       {!profileLoading && myProfile ? (
         <>

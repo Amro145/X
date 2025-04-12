@@ -41,7 +41,6 @@ function PostDetails({ onePost }) {
   useEffect(() => {
     if (post.length !== 0 && !postLoading) {
       setLike(post.likes.includes(userData._id));
-      console.log(post.likes);
     }
   }, [post, postLoading]);
   const handleCommentSubmit = (e) => {

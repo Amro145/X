@@ -16,18 +16,20 @@ function App() {
   useEffect(() => {
     dispatch(checkAuth());
   }, [dispatch]);
-console.log(userData)
+  console.log(userData);
   return (
     <BrowserRouter>
       {checkLoading ? (
-        <div className="flex justify-center h-screen   items-center absolute top-10 left-1/2">
-          <span className={`loading loading-spinner  w-10`} />
+        <div class="flex justify-center items-center h-screen">
+          <div class="animate-spin rounded-full h-16 w-16 border-4 border-blue-500 border-t-transparent"></div>
         </div>
       ) : (
         <Routes>
           <Route
             path="/"
-            element={userData.length !== 0 ? <Home /> : <Navigate to="/login" />}
+            element={
+              userData.length !== 0 ? <Home /> : <Navigate to="/login" />
+            }
           />
           <Route
             path="/signup"
@@ -40,11 +42,15 @@ console.log(userData)
           <Route path="/hero" element={<Hero />} />
           <Route
             path="/notifiction"
-            element={userData.length !== 0 ? <Notifiction /> : <Navigate to="/login" />}
+            element={
+              userData.length !== 0 ? <Notifiction /> : <Navigate to="/login" />
+            }
           />
           <Route
             path="/profile/:username"
-            element={userData.length !== 0 ? <Profile /> : <Navigate to="/login" />}
+            element={
+              userData.length !== 0 ? <Profile /> : <Navigate to="/login" />
+            }
           />
         </Routes>
       )}
