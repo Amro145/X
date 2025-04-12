@@ -25,8 +25,8 @@ function Login() {
   return (
     <div className="flex flex-col justify-center items-center md:grid md:grid-cols-12 md:gap-4  w-full h-screen overflow-hidden  ">
       {loading ? (
-        <div class="flex justify-center items-center h-screen">
-          <div class="animate-spin rounded-full h-16 w-16 border-4 border-blue-500 border-t-transparent"></div>
+        <div className="flex justify-center items-center h-screen">
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-500 border-t-transparent"></div>
         </div>
       ) : (
         <>

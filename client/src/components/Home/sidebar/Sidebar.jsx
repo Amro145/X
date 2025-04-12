@@ -25,8 +25,8 @@ function Sidbar() {
         </div>
       </Link>
       {checkLoading ? (
-        <div class="flex justify-center items-center h-screen">
-          <div class="animate-spin rounded-full h-16 w-16 border-4 border-blue-500 border-t-transparent"></div>
+        <div className="flex justify-center items-center h-screen">
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-500 border-t-transparent"></div>
         </div>
       ) : (
         <>

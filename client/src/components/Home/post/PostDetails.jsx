@@ -11,9 +11,10 @@ import {
   deletePost,
   likeUnLike,
 } from "../../../../store (3)/api/postApi";
+import { timeSince } from "../../../../lib/date";
 
 function PostDetails({ onePost }) {
-  const formatedDate = "1h";
+  const formatedDate = timeSince(onePost.createdAt);
   const [comment, setComment] = useState("");
   const [isBookmark, setIsBookmark] = useState(false);
   const [post, setPosts] = useState([]);
