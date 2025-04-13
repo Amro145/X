@@ -15,11 +15,11 @@ export const suggestedUser = createAsyncThunk("user/suggestedUser", async () => 
     return res.data
 })
 export const editProfile = createAsyncThunk("user/editProfile", async (data) => {
-    const res = await axios.put("http://localhost:8000/api/users/updateProfile", { data }, { withCredentials: true })
+    const res = await axios.put("http://localhost:8000/api/users/updateProfile", data, { withCredentials: true })
     return res.data
 })
 export const editPassword = createAsyncThunk("user/editPassword", async (data) => {
-    const res = await axios.put("http://localhost:8000/api/users/updatePassword", { data }, { withCredentials: true })
+    const res = await axios.put("http://localhost:8000/api/users/updatePassword", data, { withCredentials: true })
     return res.data
 })
 

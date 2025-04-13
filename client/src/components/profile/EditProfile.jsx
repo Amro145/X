@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { editPassword, editProfile } from "../../../store (3)/api/userApi";
+import { useNavigate } from "react-router-dom";
 
 function EditProfile() {
-  const { userData } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+  const { userData, error } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     userName: userData.userName,
@@ -13,25 +15,32 @@ function EditProfile() {
     password: "",
     oldPassword: "",
   });
+
   const PasswordData = {
-    password: formData.password[0],
-    oldPassword: formData.oldPassword[0],
+    password: formData.password, // Fixed: Removed [0]
+    oldPassword: formData.oldPassword, // Fixed: Removed [0]
   };
+
   const cleanData = {
     userName: formData.userName.toString(),
     email: formData.email.toString(),
     bio: formData.bio.toString(),
     link: formData.link.toString(),
   };
+
   const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value }); // Fix: Remove array brackets
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
   const handleUpdateProfile = (data) => {
     dispatch(editProfile(data));
+    console.log(data);
   };
+
   const handleUpdatePassword = (data) => {
     dispatch(editPassword(data));
   };
+
   return (
     <div className="pl-10 mt-10">
       <button
@@ -98,9 +107,19 @@ function EditProfile() {
                   onChange={handleInputChange}
                 />
               </div>
-              <button className="btn btn-primary rounded-full btn-sm text-white">
+              <button
+                className="btn btn-primary rounded-full btn-sm text-white"
+                onClick={() => {
+                  error ? (
+                    <div className="text-red-500">{error}</div>
+                  ) : (
+                    navigate("/")
+                  );
+                }}
+              >
                 Update
               </button>
+              {error && <div className="text-red-500">{error}</div>}
             </form>
           </div>
         </div>

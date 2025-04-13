@@ -91,47 +91,47 @@ export const isGetSuggestedUser = async (req, res) => {
 
 }
 export const updateProfile = async (req, res) => {
-    let { userName, email, password, oldPassword, bio, link, profilePic, coverPic } = req.body
-    const Id = req.user._id
-    const user = await User.findById(Id)
+    let { userName, email, bio, link, profilePic, coverPic } = req.body;
+    const Id = req.user._id;
+    const user = await User.findById(Id);
 
     try {
-
-
         if (profilePic) {
             if (user.profilePic) {
-                await cloudinary.uploader.destroy(user.profilePic.split("/").pop().split(".")[0])
+                await cloudinary.uploader.destroy(user.profilePic.split("/").pop().split(".")[0]);
             }
-            const uploadediamge = await cloudinary.uploader.upload(profilePic)
-            profilePic = uploadediamge.secure_url;
+            const uploadedImage = await cloudinary.uploader.upload(profilePic);
+            profilePic = uploadedImage.secure_url;
         }
 
         if (coverPic) {
             if (user.coverPic) {
-                await cloudinary.uploader.destroy(user.coverPic.split("/").pop().split(".")[0])
+                await cloudinary.uploader.destroy(user.coverPic.split("/").pop().split(".")[0]);
             }
-            const uploadediamge = await cloudinary.uploader.upload(coverPic)
-            profilePic = uploadediamge.secure_url;
+            const uploadedImage = await cloudinary.uploader.upload(coverPic);
+            coverPic = uploadedImage.secure_url; // Fixed assignment to coverPic
         }
-        const updateData = await User.findByIdAndUpdate(Id, {
-            userName,
-            email,
-            bio,
-            link,
-            profilePic,
-            coverPic,
 
-        }, { new: true, runValidators: true });
+        const updateData = await User.findByIdAndUpdate(
+            Id,
+            {
+                userName,
+                email,
+                bio,
+                link,
+                profilePic,
+                coverPic,
+            },
+            { new: true, runValidators: true }
+        );
+        console.log("updateData", updateData);
 
-        return res.status(200).json(updateData)
-
-
+        return res.status(200).json(updateData);
     } catch (error) {
         console.log("update profile error", error);
-        res.status(500).json({ message: "update profile error" })
-        console.log(error);
+        res.status(500).json({ message: "update profile error" });
     }
-}
+};
 
 export const updatePassword = async (req, res) => {
     const Id = req.user._id
