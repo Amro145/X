@@ -13,7 +13,7 @@ import {
 } from "../../../store (3)/api/notificationApi";
 function Notifiction() {
   const { notificationList, notifiactionLoading } = useSelector(
-    (state) => state.notifiction
+    (state) => state.notification
   );
   const dispatch = useDispatch();
 
@@ -28,11 +28,11 @@ function Notifiction() {
   };
 
   return (
-    <div className="w-full h-screen">
+    <div className="w-full ">
       {notifiactionLoading && (
-       <div className="flex justify-center items-center h-screen">
-       <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-500 border-t-transparent"></div>
-     </div>
+        <div className="flex justify-center items-center h-screen">
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-500 border-t-transparent"></div>
+        </div>
       )}
 
       <div>

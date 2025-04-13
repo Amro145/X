@@ -8,8 +8,8 @@ export const getNotifictions = async (req, res) => {
             select: "userName , profilePic"
         })
         // await Notification.updateMany({ to: me._id }, { read: true })
-        return res.status(200).json(notifiction)
 
+        return res.status(200).json(notifiction)
     } catch (error) {
         console.log("error in get notifictions", error);
 
@@ -33,17 +33,29 @@ export const deleteNotifictions = async (req, res) => {
 }
 export const deleteOneNotifiction = async (req, res) => {
     try {
-        const notifictionId = req.params.id
+        const notifictionId = req.params.id;
         const me = req.user;
-        const notification = await Notification.findById(notifictionId)
-        if (!notification) return res.status(404).json({ message: "Notifiction Not found" })
-        if (notification.to.toString() !== me._id.toString()) return res.status(403).json({ message: "Not Authriztion" })
+        const notification = await Notification.findById(notifictionId);
 
-        await Notification.findByIdAndDelete(notifictionId)
-        const notifications = await Notification.find()
-        return res.status(200).json(notifications)
+        if (!notification) {
+            return res.status(404).json({ message: "Notification not found" });
+        }
+
+        if (notification.to.toString() !== me._id.toString()) {
+            return res.status(403).json({ message: "Not authorized" });
+        }
+
+        await Notification.findByIdAndDelete(notifictionId);
+
+        // Fetch updated notifications after deletion
+        const notifications = await Notification.find({ to: { $in: me._id } }).populate({
+            path: "from",
+            select: "userName , profilePic",
+        });
+
+        return res.status(200).json(notifications);
     } catch (error) {
-        console.log("error in delete one notifictions", error);
-        return res.status(500).json({ message: "error in delete one  notifictions" })
+        console.log("Error in deleting one notification:", error);
+        return res.status(500).json({ message: "Error in deleting one notification" });
     }
-}
+};

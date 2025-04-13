@@ -7,7 +7,7 @@ export const signup = async (req, res) => {
   try {
     const isUserExist = await User.findOne({ email })
     if (isUserExist) {
-      return res.status(400).json({ message: "User Alredy Exist" })
+      return res.status(400).json({ message: "User Alredy Exist" }).render('error', { error: err })
     }
     // hash password
     const salt = await bcrypt.genSalt(10)
@@ -23,6 +23,7 @@ export const signup = async (req, res) => {
       genTokenAndSetCookie(newUser._id, res)
       await newUser.save()
       return res.status(201).json(newUser)
+
     } else {
       return res.status(400).json({ message: "Invalid data" })
     }

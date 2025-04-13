@@ -10,25 +10,28 @@ import { v2 as cloudinary } from "cloudinary";
 import cors from "cors"
 dotenv.config();
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_NAME,  
+  cloud_name: process.env.CLOUDINARY_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET
 })
 
 const app = express();
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+
+);
+
 
 app.listen(process.env.PORT || 8000, () => {
   console.log(`Server is running on port ${process.env.PORT || 8000}`);
   ConnectToDb();
 });
 app.use(express.urlencoded({ extended: true })); // لفك تشفير بيانات الفورم
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-    credentials: true,
-  })
-  
-); app.use(express.json());
+
+app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }))
 app.use("/api/auth", authRoutes);
@@ -41,5 +44,5 @@ app.use((err, req, res, next) => {
   console.error("Error:", err.message); // Log the error to the console
   res.status(err.status || 500).json({
     message: err.message || "Internal Server Error",
-  });
+  }); // Render the error page with the error object
 });

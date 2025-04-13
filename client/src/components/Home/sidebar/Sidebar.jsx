@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { MdHomeFilled } from "react-icons/md";
 import { IoNotifications } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
@@ -7,9 +7,15 @@ import { BiLogOut } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { ProfileFn } from "../../../../store (3)/api/userApi";
 import { logout } from "../../../../store (3)/api/authApi";
+import { notification } from "../../../../store (3)/api/notificationApi";
 function Sidbar() {
   const { userData, checkLoading } = useSelector((state) => state.auth);
+  const { notificationList } = useSelector((state) => state.notification);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(notification());
+  }, [dispatch]);
   return (
     <div className=" px-10 hidden md:grid h-screen">
       <Link to="/">
@@ -39,9 +45,12 @@ function Sidbar() {
                 </li>
               </Link>
               <Link to={`/notifiction`}>
-                <li className="notfiction flex items-center justify-around py-1 hover:bg-gray-700 cursor-pointer duration-150 rounded-2xl">
+                <li className="notfiction relative flex items-center justify-around py-1 hover:bg-gray-700 cursor-pointer duration-150 rounded-2xl">
                   <IoNotifications className="w-10 h-10  " />
-                  <span className="font-bold ">Notifiction</span>
+                  <div className="font-bold ">Notifiction</div>
+                  {notificationList.length !== 0 && (
+                    <div className="bg-blue-700 absolute top-0 left-9 p-2 rounded-full"></div>
+                  )}
                 </li>
               </Link>
 
