@@ -116,7 +116,6 @@ function Rightbar() {
                   }}
                 >
                   {user?.following.includes(user._id) ? "unFollow" : "follow"}
-                  follow
                 </button>
               </div>
             </div>

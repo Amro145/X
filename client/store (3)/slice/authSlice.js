@@ -1,12 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { checkAuth, login, logout, signup } from "../api/authApi";
-import { editPassword, editProfile } from "../api/userApi";
+import { editPassword, editProfile, followUnFollow } from "../api/userApi";
 
 const initialState = {
     userData: JSON.parse(localStorage.getItem("userData")) || [],
     loading: false,
     error: null,
-    checkLoading: false
+    checkLoading: false,
+    followStatus: false,
+    followLoading: false,
 }
 const authSlice = createSlice({
     name: "user",
@@ -93,6 +95,23 @@ const authSlice = createSlice({
             })
             .addCase(editPassword.rejected, (state, action) => {
                 state.loading = false,
+                    state.error = action.error.message
+            })
+            //follow and un follow
+            .addCase(followUnFollow.pending, (state) => {
+                state.followLoading = true,
+                    state.loading = true,
+                    state.error = null
+            })
+            .addCase(followUnFollow.fulfilled, (state, action) => {
+                state.followLoading = false;
+                state.loading = false;
+                state.followStatus = action.payload.message;
+                state.userData = action.payload.myaccount;
+            })
+            .addCase(followUnFollow.rejected, (state, action) => {
+                state.followLoading = false,
+                    state.loading = false,
                     state.error = action.error.message
             })
     }

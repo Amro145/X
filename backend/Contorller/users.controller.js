@@ -22,7 +22,7 @@ export const followUnFollowUser = async (req, res) => {
     try {
         const { id } = req.params
         const selectedUser = await User.findById(id)
-        const me = await User.findById(req.user._id)
+        const me = req.user
 
         // check me and selected user is correct users
         if (!me || !selectedUser) {
@@ -38,7 +38,8 @@ export const followUnFollowUser = async (req, res) => {
             // un Following
             await User.findByIdAndUpdate(id, { $pull: { followers: req.user._id } })
             await User.findByIdAndUpdate(req.user._id, { $pull: { following: id } })
-            return res.status(200).json({ message: "Follow" })
+            const myaccount = await User.findById(me._id).select("-password")
+            return res.status(200).json({ myaccount, message: false })
         } else {
             await User.findByIdAndUpdate(id, { $push: { followers: req.user._id } })
             await User.findByIdAndUpdate(req.user._id, { $push: { following: id } })
@@ -49,10 +50,9 @@ export const followUnFollowUser = async (req, res) => {
                 type: "follow",
             })
             await newnotifiction.save()
-            console.log("id", id, "me",);
+            const myaccount = await User.findById(me._id).select("-password")
 
-            return res.status(200).json({ message: " UnFollow", })
-
+            return res.status(200).json({ myaccount, message: true, })
         }
 
     } catch (error) {

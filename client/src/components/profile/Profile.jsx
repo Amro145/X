@@ -132,7 +132,7 @@ function Profile() {
                 </div>
                 <div className="date flex">
                   <IoCalendarOutline />
-                  <span className="text-gray-700">{`joined At ${timeSince(
+                  <span className="text-gray-700">{`انضم  ${timeSince(
                     myProfile?.createdAt
                   )}`}</span>
                 </div>
@@ -152,7 +152,11 @@ function Profile() {
                 </span>
               </div>
             </div>
-            {isMyProfile ? <EditProfile /> : <FollowUnfollow />}
+            {isMyProfile ? (
+              <EditProfile />
+            ) : (
+              <FollowUnfollow user={myProfile} />
+            )}
           </div>
           <div className="posts mt-10">
             <div className="head">

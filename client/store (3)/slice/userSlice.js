@@ -1,19 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { followUnFollow, ProfileFn, suggestedUser } from "../api/userApi";
+import {  ProfileFn, suggestedUser } from "../api/userApi";
 
 const initialState = {
     myProfile: [],
     suggestedUserList: [],
     suggestedLoading : false,
-    followStatus: [],
-    loading: false,
     profileLoading: false,
     error: null,
     
 }
 const userSlice = createSlice({
-    name: "food",
+    name: "user",
     initialState,
+   
     extraReducers: (builder) => {
         builder
             .addCase(ProfileFn.pending, (state) => {
@@ -42,19 +41,7 @@ const userSlice = createSlice({
                     state.error = action.error.message
             })
 
-            // follow un follow User
-            .addCase(followUnFollow.pending, (state) => {
-                state.loading = true,
-                    state.error = null
-            })
-            .addCase(followUnFollow.fulfilled, (state, action) => {
-                state.loading = false,
-                    state.followStatus = action.payload
-            })
-            .addCase(followUnFollow.rejected, (state, action) => {
-                state.loading = false,
-                    state.error = action.error.message
-            })
+         
 
     }
 })

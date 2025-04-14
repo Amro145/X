@@ -7,7 +7,7 @@ export const ProfileFn = createAsyncThunk("user/Profile", async (name) => {
 })
 
 export const followUnFollow = createAsyncThunk("user/followUnFollow", async (id) => {
-    const res = await axios.post(`http://localhost:8000/api/users/follow/${id}`, { withCredentials: true })
+    const res = await axios.post(`http://localhost:8000/api/users/follow/${id}`, {}, { withCredentials: true })
     return res.data
 })
 export const suggestedUser = createAsyncThunk("user/suggestedUser", async () => {

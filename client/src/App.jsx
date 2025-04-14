@@ -16,7 +16,9 @@ function App() {
   useEffect(() => {
     dispatch(checkAuth());
   }, [dispatch]);
-  console.log(userData);
+  useEffect(() => {
+    console.log("userData", userData);
+  }, [userData]);
   return (
     <BrowserRouter>
       {checkLoading ? (

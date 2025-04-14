@@ -1,45 +1,41 @@
-// import React from "react";
-// import { useAuthStore } from "../../../store/AuthStore";
-// // import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { followUnFollow } from "../../../store (3)/api/userApi";
 
-// function FollowUnfollow() {
-//   const { followFn, gettingProfile, frindProfile, refreshData } =
-//     useAuthStore();
-//     // const {followStatus} = useSelector((state) => state.user)
+function FollowUnfollow({ user }) {
+  console.log(user);
+  const { profileLoading } = useSelector((state) => state.user);
+  const { followStatus, followLoading } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
-//   return (
-//     <button
-//       className="btn outline bg-transparent hover:bg-white hover:opacity-90 rounded  px-5 relative left-10 mt-5 mb-10 "
-//       onClick={(e) => {
-//         e.preventDefault();
-//         if (
-//           !gettingProfile &&
-//           frindProfile !== undefined &&
-//           frindProfile !== null
-//         ) {
-//           followFn(frindProfile.user._id);
-//         }
-//       }}
-//     >
-//       {!gettingProfile &&
-//         frindProfile !== undefined &&
-//         frindProfile !== null &&
-//         (refreshData?.following.includes(frindProfile.user?._id)
-//           ? "unFollow"
-//           : "follow")}
-//     </button>
-//   );
-// }
+  const [isFollow, setIsFollow] = useState(followStatus || false);
 
-// export default FollowUnfollow;
-import React from 'react'
-
-function FollowUnfollow() {
+  useEffect(() => {
+    if (user !== undefined && user !== null && !followLoading) {
+      setIsFollow(followStatus);
+      console.log(isFollow);
+    }
+  }, [followStatus, user]);
+  const handleFollowUnfollow = async (userId) => {
+    if (!profileLoading && user !== undefined && user !== null) {
+      dispatch(followUnFollow(userId));
+    }
+  };
   return (
-    <div>
-      
-    </div>
-  )
+    <button
+      className="btn outline bg-transparent hover:bg-white hover:opacity-90 rounded  px-5 relative left-10 mt-5 mb-10 "
+      onClick={(e) => {
+        e.preventDefault();
+        handleFollowUnfollow(user._id);
+      }}
+    >
+      {followLoading
+        ? "loading"
+        : user !== undefined &&
+          user !== null &&
+          (isFollow ? "unFollow" : "Follow")}
+    </button>
+  );
 }
 
-export default FollowUnfollow
+export default FollowUnfollow;
