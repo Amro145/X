@@ -5,7 +5,7 @@ import { followUnFollow } from "../../../store (3)/api/userApi";
 function FollowUnfollow({ user }) {
   console.log(user);
   const { followStatus, followLoading, profileLoading } = useSelector(
-    (state) => state.user
+    (state) => state.auth
   );
   const dispatch = useDispatch();
 

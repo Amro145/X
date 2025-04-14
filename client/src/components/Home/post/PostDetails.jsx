@@ -56,7 +56,7 @@ function PostDetails({ onePost }) {
         <div className="border-b border-gray-700 pt-5 pb-2 ">
           <div className="postInfo flex justify-between items-center pr-10 text-start">
             <div className="userinfo">
-              <Link to={`/profile/${post.user.userName}`}>
+              <Link to={`/profile/${post.user._id}`}>
                 <div className="avatar pr-5">
                   <div className="w-12 ">
                     {post.user.profilePic ? (

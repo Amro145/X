@@ -1,19 +1,69 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { checkAuth, login, logout, signup } from "../api/authApi";
-import { editPassword, editProfile } from "../api/userApi";
+import { editPassword, editProfile, followUnFollow, ProfileFn, suggestedUser } from "../api/userApi";
 
 const initialState = {
     userData: JSON.parse(localStorage.getItem("userData")) || [],
     loading: false,
     error: null,
     checkLoading: false,
-    
+    myProfile: [],
+    suggestedUserList: [],
+    suggestedLoading: false,
+    followStatus: [],
+    followLoading: false,
+    profileLoading: false,
+
 }
 const authSlice = createSlice({
     name: "user",
     initialState,
     extraReducers: (builder) => {
         builder
+            // profile function
+
+            .addCase(ProfileFn.pending, (state) => {
+                state.profileLoading = true,
+                    state.error = null
+            })
+            .addCase(ProfileFn.fulfilled, (state, action) => {
+                state.profileLoading = false,
+                    state.myProfile = action.payload
+            })
+            .addCase(ProfileFn.rejected, (state, action) => {
+                state.profileLoading = false,
+                    state.error = action.error.message
+            })
+            // suggested User
+            .addCase(suggestedUser.pending, (state) => {
+                state.suggestedLoading = true,
+                    state.error = null
+            })
+            .addCase(suggestedUser.fulfilled, (state, action) => {
+                state.suggestedLoading = false,
+                    state.suggestedUserList = action.payload
+            })
+            .addCase(suggestedUser.rejected, (state, action) => {
+                state.suggestedLoading = false,
+                    state.error = action.error.message
+            })
+
+            //follow and un follow
+            .addCase(followUnFollow.pending, (state) => {
+                state.followLoading = true,
+                    state.error = null
+            })
+            .addCase(followUnFollow.fulfilled, (state, action) => {
+                state.followLoading = false;
+                state.followStatus = action.payload.message;
+                state.myProfile = action.payload.followUser;
+                state.userData = action.payload.myaccount;
+            })
+            .addCase(followUnFollow.rejected, (state, action) => {
+                state.followLoading = false;
+                state.error = action.error.message;
+            })
+
             .addCase(signup.pending, (state) => {
                 state.loading = true,
                     state.error = null
@@ -96,7 +146,7 @@ const authSlice = createSlice({
                 state.loading = false,
                     state.error = action.error.message
             })
-         
+
     }
 })
 

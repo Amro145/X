@@ -4,9 +4,9 @@ import Notfication from "../Models/notification.model.js"
 import bcrypt from "bcryptjs"
 
 export const getUsersProfile = async (req, res) => {
-    const { userName } = req.params
+    const { id } = req.params
     try {
-        const user = await User.findOne({ userName }).select("-password")
+        const user = await User.findById(id).select("-password")
         if (!user) {
             return res.status(404).json({ message: "user not found" })
         }

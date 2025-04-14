@@ -13,7 +13,7 @@ import { ProfileFn } from "../../../store (3)/api/userApi";
 import { timeSince } from "../../../lib/date";
 
 function Profile() {
-  const { myProfile, profileLoading } = useSelector((state) => state.user);
+  const { myProfile, profileLoading } = useSelector((state) => state.auth);
   const { userData } = useSelector((state) => state.auth);
   const { postLoading, allPostList } = useSelector((state) => state.post);
   const [isMyProfile, setIsMyProfile] = useState(false);
@@ -38,7 +38,7 @@ function Profile() {
   };
 
   useEffect(() => {
-    dispatch(ProfileFn(params.username));
+    dispatch(ProfileFn(params.id));
   }, [dispatch]);
   useEffect(() => {
     if (!profileLoading && myProfile._id !== undefined) dispatch(getAllPosts());
@@ -125,9 +125,9 @@ function Profile() {
                   <FaLink className="w-3 h-3 text-slate-500 mr-5" />
                   <a
                     className="text-blue-600 text-sm"
-                    href={`http://localhost:5173/profile/${myProfile?.userName}`}
+                    href={`http://localhost:5173/profile/${myProfile?._id}`}
                   >
-                    {`http://localhost:5173/profile/${myProfile?.userName}`}
+                    {`http://localhost:5173/profile/${myProfile?._id}`}
                   </a>
                 </div>
                 <div className="date flex">

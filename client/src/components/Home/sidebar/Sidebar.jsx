@@ -54,7 +54,7 @@ function Sidbar() {
                 </li>
               </Link>
 
-              <Link to={`/profile/${userData?.userName || "/"}`}>
+              <Link to={`/profile/${userData?._id || "/"}`}>
                 <li className="profile flex items-center justify-around py-1 hover:bg-gray-700 cursor-pointer duration-150 rounded-2xl">
                   <FaUser className="w-10 h-10 " />
                   <span className="font-bold">Profile</span>
@@ -66,7 +66,7 @@ function Sidbar() {
           <div className="logout sticky mt-50">
             <div className="flex pr-5">
               <Link
-                to={`/profile/${userData.userName}`}
+                to={`/profile/${userData._id}`}
                 className="info flex w-full"
                 onClick={() => {
                   dispatch(ProfileFn(userData.userName));

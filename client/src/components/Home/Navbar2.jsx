@@ -22,7 +22,7 @@ function Navbar2() {
             <IoNotifications size={25} />
           </li>
         </Link>
-        <Link to={`/profile/${userData.userName}`}>
+        <Link to={`/profile/${userData._id}`}>
           <li>
             <FaUser size={25} />
           </li>

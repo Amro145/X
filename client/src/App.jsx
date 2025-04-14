@@ -49,7 +49,7 @@ function App() {
             }
           />
           <Route
-            path="/profile/:username"
+            path="/profile/:id"
             element={
               userData.length !== 0 ? <Profile /> : <Navigate to="/login" />
             }
