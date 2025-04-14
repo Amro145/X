@@ -4,8 +4,9 @@ import { followUnFollow } from "../../../store (3)/api/userApi";
 
 function FollowUnfollow({ user }) {
   console.log(user);
-  const { profileLoading } = useSelector((state) => state.user);
-  const { followStatus, followLoading } = useSelector((state) => state.auth);
+  const { followStatus, followLoading, profileLoading } = useSelector(
+    (state) => state.user
+  );
   const dispatch = useDispatch();
 
   const [isFollow, setIsFollow] = useState(followStatus || false);

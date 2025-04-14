@@ -39,7 +39,9 @@ export const followUnFollowUser = async (req, res) => {
             await User.findByIdAndUpdate(id, { $pull: { followers: req.user._id } })
             await User.findByIdAndUpdate(req.user._id, { $pull: { following: id } })
             const myaccount = await User.findById(me._id).select("-password")
-            return res.status(200).json({ myaccount, message: false })
+            const followUser = await User.findById(id).select("-password")
+
+            return res.status(200).json({ myaccount, followUser, message: false })
         } else {
             await User.findByIdAndUpdate(id, { $push: { followers: req.user._id } })
             await User.findByIdAndUpdate(req.user._id, { $push: { following: id } })
@@ -51,8 +53,9 @@ export const followUnFollowUser = async (req, res) => {
             })
             await newnotifiction.save()
             const myaccount = await User.findById(me._id).select("-password")
+            const followUser = await User.findById(id).select("-password")
 
-            return res.status(200).json({ myaccount, message: true, })
+            return res.status(200).json({ myaccount, followUser, message: true, })
         }
 
     } catch (error) {
