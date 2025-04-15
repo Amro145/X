@@ -135,7 +135,6 @@ export const updateProfile = async (req, res) => {
         res.status(500).json({ message: "update profile error" });
     }
 };
-
 export const updatePassword = async (req, res) => {
     const Id = req.user._id
     const user = await User.findById(Id)
@@ -168,6 +167,34 @@ export const updatePassword = async (req, res) => {
         return res.status(200).json(updateData)
     } catch (error) {
         console.log(error);
+
+    }
+}
+export const getFollowing = async (req, res) => {
+    const { id } = req.params
+    try {
+        const user = await User.findById(id).populate("following", "-password")
+        if (!user) {
+            return res.status(404).json({ message: "user not found" })
+        }
+        return res.status(200).json(user.following)
+    } catch (error) {
+        console.log("error in get Following", error);
+        return res.status(500).json({ message: "error in get Following" })
+
+    }
+}
+export const getFollowers = async (req, res) => {
+    const { id } = req.params
+    try {
+        const user = await User.findById(id).populate("followers", "-password")
+        if (!user) {
+            return res.status(404).json({ message: "user not found" })
+        }
+        return res.status(200).json(user.followers)
+    } catch (error) {
+        console.log("error in get Following", error);
+        return res.status(500).json({ message: "error in get Following" })
 
     }
 }
