@@ -3,7 +3,7 @@ import { deleteNotifications, deleteOneNotifications, notification } from "../ap
 
 const initialState = {
     notificationList: [],
-    notifiactionLoading: false,
+    notificationLoading: false,
     error: null,
 }
 const notificationSlice = createSlice({
@@ -12,42 +12,42 @@ const notificationSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(notification.pending, (state) => {
-                state.notifiactionLoading = true,
-                    state.error = null
+                state.notificationLoading = true;
+                state.error = null;
             })
             .addCase(notification.fulfilled, (state, action) => {
-                state.notifiactionLoading = false,
-                    state.notificationList = action.payload
+                state.notificationLoading = false;
+                state.notificationList = action.payload;
             })
             .addCase(notification.rejected, (state, action) => {
-                state.notifiactionLoading = false,
-                    state.error = action.error.message
+                state.notificationLoading = false;
+                state.error = action.error.message;
             })
             // delete one
             .addCase(deleteOneNotifications.pending, (state) => {
-                state.notifiactionLoading = true,
-                    state.error = null
+                state.notificationLoading = true;
+                state.error = null;
             })
             .addCase(deleteOneNotifications.fulfilled, (state, action) => {
-                state.notifiactionLoading = false,
-                    state.notificationList = action.payload
+                state.notificationLoading = false;
+                state.notificationList = action.payload;
             })
             .addCase(deleteOneNotifications.rejected, (state, action) => {
-                state.notifiactionLoading = false,
-                    state.error = action.error.message
+                state.notificationLoading = false;
+                state.error = action.error.message;
             })
             // delete all
             .addCase(deleteNotifications.pending, (state) => {
-                state.notifiactionLoading = true,
-                    state.error = null
+                state.notificationLoading = true;
+                state.error = null;
             })
             .addCase(deleteNotifications.fulfilled, (state, action) => {
-                state.notifiactionLoading = false,
-                    state.notificationList = action.payload
+                state.notificationLoading = false;
+                state.notificationList = action.payload;
             })
             .addCase(deleteNotifications.rejected, (state, action) => {
-                state.notifiactionLoading = false,
-                    state.error = action.error.message
+                state.notificationLoading = false;
+                state.error = action.error.message;
             })
     }
 })

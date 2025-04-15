@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { getAllPosts, getFollowingPosts } from "../../../store (3)/api/postApi";
 
 function Navbar() {
-  const [type, setType] = useState("for You");
+  const [type, setType] = useState("forYou");
 
   const dispatch = useDispatch();
   return (
@@ -19,11 +19,11 @@ function Navbar() {
             setType("forYou");
             dispatch(getAllPosts());
           }}
-          className="cursor-pointer   hover:bg-secondary bg-transparent transition delay-100 duration-200 ease-in w-full flex justify-center"
+          className="cursor-pointer  hover:bg-secondary bg-transparent transition delay-100 duration-200 ease-in w-full flex justify-center"
         >
           <div className="pt-1 ">for You</div>
           {type === "forYou" && (
-            <div className="absolute bottom-0 w-10  h-1 rounded-full bg-primary"></div>
+            <div className="absolute bottom-0 w-10  h-1 text-white rounded-full bg-primary"></div>
           )}
         </button>
         <button

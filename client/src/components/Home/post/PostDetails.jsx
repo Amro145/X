@@ -83,7 +83,7 @@ function PostDetails({ onePost }) {
                 <span className="text-gray-700 text-sm">
                   @ {post.user.email}
                 </span>
-                <span className="text-gray-400">{formatedDate}</span>
+                <span className="text-gray-700">{formatedDate}</span>
               </Link>
             </div>
             {!creatPostLoading &&

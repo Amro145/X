@@ -5,6 +5,7 @@ import { MdPassword } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signup } from "../../../store (3)/api/authApi";
+import Swal from "sweetalert2";
 
 function Signup() {
   const [formData, setFormData] = useState({
@@ -21,14 +22,27 @@ function Signup() {
   const dispatch = useDispatch();
 
   const validateForm = () => {
-    if (!cleanData.userName || !cleanData.userName.trim()) {
-      // console.log("User Name is  Required!");
-    } else if (!cleanData.email || !cleanData.email.trim()) {
-      // console.log("Email  is  Required!");
+    if (!cleanData.email || !cleanData.email.trim()) {
+      Swal.fire({
+        text: "Email is Required!",
+        timer: 1500,
+      });
+    } else if (!cleanData.userName || !cleanData.userName.trim()) {
+      Swal.fire({
+        text: "useName is Required!",
+        autoClose: true,
+        timer: 1500,
+      });
     } else if (!cleanData.password) {
-      // console.log("password  is  required!");
+      Swal.fire({
+        text: " Password is Required!",
+        timer: 1500,
+      });
     } else if (cleanData.password.length < 6) {
-      // console.log("password  is Too Short");
+      Swal.fire({
+        text: "Password must be at least 6 characters long!",
+        timer: 1500,
+      });
     } else {
       return true;
     }
@@ -46,7 +60,7 @@ function Signup() {
   return (
     <div className="flex flex-col justify-center items-center md:grid md:grid-cols-12 md:gap-4  w-full h-screen overflow-hidden  ">
       {loading ? (
-        <div className="flex justify-center items-center h-screen">
+        <div className="flex justify-center items-center h-screen w-screen ">
           <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-500 border-t-transparent"></div>
         </div>
       ) : (
@@ -61,7 +75,7 @@ function Signup() {
               <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z" />
             </svg>
           </div>
-          <div className=" col-span-12 flex flex-col justify-center md:col-span-5 ">
+          <div className=" px-2 col-span-12 flex flex-col justify-center md:col-span-5 ">
             <div className="title font-bold text-4xl mb-3 md:mb-10">
               Join today.
             </div>
@@ -100,9 +114,12 @@ function Signup() {
                 />
               </label>
             </form>
-            <div className="flex flex-col lg:w-2/3 gap-2 mt-4">
+            <div
+              className="grid  lg:w-2/3 gap-2 mt-4  
+            w-full" 
+            >
               <button
-                className="btn rounded-full btn-primary text-white btn-outline w-full"
+                className="btn rounded-full btn-primary text-white w-full"
                 onClick={handleSubmit}
               >
                 Submit
