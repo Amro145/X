@@ -4,15 +4,15 @@ export const timeSince = (dateString) => {
     const createdAt = new Date(dateString);
     const seconds = Math.floor((now - createdAt) / 1000);
 
-    if (seconds < 60) return `منذ ${seconds} ثانية`;
+    if (seconds < 60) return `since ${seconds} seconed`;
     const minutes = Math.floor(seconds / 60);
-    if (minutes < 60) return `منذ ${minutes} دقيقة`;
+    if (minutes < 60) return `since ${minutes} minutes`;
     const hours = Math.floor(minutes / 60);
-    if (hours < 24) return `منذ ${hours} ساعة`;
+    if (hours < 24) return `since ${hours} hour`;
     const days = Math.floor(hours / 24);
-    if (days < 30) return `منذ ${days} يوم`;
+    if (days < 30) return `since ${days} days`;
     const months = Math.floor(days / 30);
-    if (months < 12) return `منذ ${months} شهر`;
+    if (months < 12) return `since ${months} month`;
     const years = Math.floor(months / 12);
-    return `منذ ${years} سنة`;
+    return `since ${years} سنة`;
 }

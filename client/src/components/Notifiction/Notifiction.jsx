@@ -34,7 +34,6 @@ function Notifiction() {
           <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-500 border-t-transparent"></div>
         </div>
       )}
-
       <div>
         <div className="header flex justify-between px-10 py-5 items-center h-10 w-full border-b border-gray-700">
           <Link to={"/"}>

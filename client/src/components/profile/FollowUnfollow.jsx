@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { followUnFollow } from "../../../store (3)/api/userApi";
 
 function FollowUnfollow({ user }) {
-  console.log(user);
   const { followStatus, followLoading, profileLoading } = useSelector(
     (state) => state.auth
   );

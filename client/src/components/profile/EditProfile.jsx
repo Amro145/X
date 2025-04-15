@@ -34,7 +34,6 @@ function EditProfile() {
 
   const handleUpdateProfile = (data) => {
     dispatch(editProfile(data));
-    console.log(data);
   };
 
   const handleUpdatePassword = (data) => {

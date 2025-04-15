@@ -29,7 +29,6 @@ function Rightbar() {
         <RightBarSkeleton />
       ) : suggestedUserList !== null && suggestedUserList.length !== 0 ? (
         suggestedUserList?.map((user) => {
-          console.log(user)
           return (
             <div className="flex  " key={user._id}>
               <Link
@@ -69,7 +68,7 @@ function Rightbar() {
           );
         })
       ) : (
-        <div></div>
+        <div>there Are No Suggested User</div>
       )}
     </div>
   );
