@@ -24,14 +24,14 @@ function Rightbar() {
   };
 
   return (
-    <div className="hidden md:block my-4 ">
+    <div className="hidden md:block my-4  w-full h-screen overflow-y-scroll ">
       {suggestedLoading ? (
         <RightBarSkeleton />
       ) : suggestedUserList !== null && suggestedUserList.length !== 0 ? (
         suggestedUserList?.map((user) => {
           console.log(user)
           return (
-            <div className="flex  " key={user._id}>
+            <div className="flex w-full  justify-center items-center gap-2 " key={user._id}>
               <Link
                 to={`/profile/${user._id}`}
                 onClick={() => {

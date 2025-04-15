@@ -38,12 +38,11 @@ export const signup = async (req, res) => {
 export const login = async (req, res) => {
   const { email, password } = req.body
   try {
-    if (email === "" || password === "") {
-      return res.status(400).json({ message: "Email and Password are required" })
-    }
     const user = await User.findOne({ email })
     const isPasswordMatch = await bcrypt.compare(password, user?.password || "")
-    if (!user || !isPasswordMatch) {
+    if (email === "" || password === "") {
+      return res.status(400).json({ message: "Email and Password are required" })
+    } else if (!user || !isPasswordMatch) {
       return res.status(400).json({ message: "User Name or Password is not correct" })
     }
     genTokenAndSetCookie(user._id, res)

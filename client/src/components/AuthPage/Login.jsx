@@ -13,7 +13,6 @@ function Login() {
     email: "",
     password: "",
   });
-  console.log(loginError);
   const validateForm = () => {
     if (!cleanData.email || !cleanData.email.trim()) {
       Swal.fire({
@@ -70,7 +69,7 @@ function Login() {
             </div>
             {errorMessage && formData.email !== "" || formData.password !==  "" && (
               <div className="text-red-400 mb-2">
-                {loginError.toLowerCase()}
+                {loginError?.toLowerCase()}
               </div>
             )}
 
