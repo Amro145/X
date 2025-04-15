@@ -13,12 +13,13 @@ function Signup() {
     password: "",
     email: "",
   });
+  const [errorMessage, setErrorMessage] = useState("");
   const cleanData = {
     userName: formData.userName[0],
     email: formData.email[0],
     password: formData.password[0],
   };
-  const { loading } = useSelector((state) => state.auth);
+  const { loading, signupError } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const validateForm = () => {
@@ -52,6 +53,8 @@ function Signup() {
     const success = validateForm();
     if (success === true) {
       dispatch(signup(cleanData));
+    } else {
+      setErrorMessage(signupError);
     }
   };
   const handleOnChange = (e) => {
@@ -79,7 +82,15 @@ function Signup() {
             <div className="title font-bold text-4xl mb-3 md:mb-10">
               Join today.
             </div>
+
             <form className="grid gap-6 overflow-hidden w-full md:w-auto  ">
+              {(errorMessage && formData.email !== "") ||
+                formData.password !== "" ||
+                (formData.userName !== "" && (
+                  <div className="text-red-400 mb-2">
+                    {signupError.toLowerCase()}
+                  </div>
+                ))}
               <label className="input input-bordered rounded flex items-center gap-2">
                 <MdOutlineMail />
                 <input
@@ -116,7 +127,7 @@ function Signup() {
             </form>
             <div
               className="grid  lg:w-2/3 gap-2 mt-4  
-            w-full" 
+            w-full"
             >
               <button
                 className="btn rounded-full btn-primary text-white w-full"

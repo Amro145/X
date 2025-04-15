@@ -8,7 +8,8 @@ import { editPassword, editProfile, followUnFollow, ProfileFn, suggestedUser } f
 const initialState = {
     userData: JSON.parse(localStorage.getItem("userData")) || [],
     loading: false,
-    error: null,
+    loginError: null,
+    signupError: null,
     checkLoading: false,
     myProfile: [],
     suggestedUserList: [],
@@ -78,11 +79,11 @@ const authSlice = createSlice({
             })
             .addCase(signup.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.error.message
+                state.signupError = action.payload
             })
             .addCase(login.pending, (state) => {
                 state.loading = true;
-                state.error = null
+                state.signupError = null
             })
             .addCase(login.fulfilled, (state, action) => {
                 state.loading = false;
@@ -92,11 +93,11 @@ const authSlice = createSlice({
             })
             .addCase(login.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.error.message
+                state.loginError = action.payload
             })
             .addCase(logout.pending, (state) => {
                 state.loading = true;
-                state.error = null
+                state.loginError = null
             })
             .addCase(logout.fulfilled, (state) => {
                 state.loading = false;

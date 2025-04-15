@@ -7,7 +7,7 @@ export const signup = async (req, res) => {
   try {
     const isUserExist = await User.findOne({ email })
     if (isUserExist) {
-      return res.status(400).json({ message: "User Alredy Exist" }).render('error', { error: err })
+      return res.status(400).json({ message: "User Alredy Exist" })
     }
     // hash password
     const salt = await bcrypt.genSalt(10)
@@ -38,6 +38,9 @@ export const signup = async (req, res) => {
 export const login = async (req, res) => {
   const { email, password } = req.body
   try {
+    if (email === "" || password === "") {
+      return res.status(400).json({ message: "Email and Password are required" })
+    }
     const user = await User.findOne({ email })
     const isPasswordMatch = await bcrypt.compare(password, user?.password || "")
     if (!user || !isPasswordMatch) {
