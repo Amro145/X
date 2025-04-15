@@ -177,7 +177,7 @@ export const getLikedPosts = async (req, res) => {
 }
 export const getFollowingPosts = async (req, res) => {
     try {
-        const myId = req.user._id
+        const me = req.user._id
         const me = await User.findById(myId)
         if (!me) return res.status(404).json({ message: "user not found" })
         const myfollowingId = me.following

@@ -1,5 +1,4 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import Hero from "./components/AuthPage/Hero";
 import Signup from "./components/AuthPage/Signup";
 import Login from "./components/AuthPage/Login";
 import Home from "./components/Home/Home";
@@ -41,7 +40,6 @@ function App() {
             path="/login"
             element={userData.length === 0 ? <Login /> : <Navigate to="/" />}
           />
-          <Route path="/hero" element={<Hero />} />
           <Route
             path="/notifiction"
             element={

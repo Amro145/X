@@ -53,7 +53,7 @@ function PostDetails({ onePost }) {
   return (
     <>
       {!postLoading && post.length !== 0 && post && (
-        <div className="border-b border-gray-700 pt-5 pb-2 ">
+        <div className="border-b border-gray-700  pt-5 pb-2 px-2 ">
           <div className="postInfo flex justify-between items-center pr-10 text-start">
             <div className="userinfo">
               <Link to={`/profile/${post.user._id}`}>

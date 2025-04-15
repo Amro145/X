@@ -20,7 +20,11 @@ function Post() {
       ) : allPostList?.length === 0 ? (
         <p className="text-center my-4">No posts in this tab. Switch 👻</p>
       ) : (
-        allPostList.map((post) => <PostDetails key={post._id} onePost={post} />)
+        <div className=" w-full">
+          {allPostList.map((post) => (
+            <PostDetails key={post._id} onePost={post} />
+          ))}
+        </div>
       )}
     </div>
   );

@@ -11,7 +11,7 @@ function Navbar() {
     <>
       <Navbar2 />
       <div
-        className="relative border-b-1 border-gray-700  flex justify-around   
+        className="relative  border-b border-gray-700  flex justify-around   
       text-center min-h-10  "
       >
         <button

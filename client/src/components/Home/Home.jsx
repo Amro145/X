@@ -16,7 +16,7 @@ function Home() {
         <div className="col-span-3 fixed top-0 right-0 h-screen">
           <Rightbar />
         </div>
-        <div className="md:col-span-6 col-span-12 md:col-start-4 col-start-1">
+        <div className="md:col-span-6 col-span-12 md:col-start-4 col-start-1 border-x border-gray-700">
           <Navbar />
           <div className="mt-4">
             <CreatePost />
