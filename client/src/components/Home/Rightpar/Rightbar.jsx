@@ -29,9 +29,8 @@ function Rightbar() {
         <RightBarSkeleton />
       ) : suggestedUserList !== null && suggestedUserList.length !== 0 ? (
         suggestedUserList?.map((user) => {
-          console.log(user)
           return (
-            <div className="flex w-full  justify-center items-center gap-2 " key={user._id}>
+            <div className="flex w-full  justify-start items-center gap-2 " key={user._id}>
               <Link
                 to={`/profile/${user._id}`}
                 onClick={() => {

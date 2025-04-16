@@ -146,7 +146,9 @@ function PostDetails({ onePost }) {
                       )}
                       {post.comment.map((comment) => (
                         <div key={comment._id}>
-                          {commentError && <div className="text-red-500 ">{commentError}</div>}
+                          {commentError && (
+                            <div className="text-red-500 ">{commentError}</div>
+                          )}
                           <Link
                             to={`/profile/${comment.user.userName}`}
                             className="flex gap-2 items-start"
