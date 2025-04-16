@@ -46,21 +46,16 @@ export const login = async (req, res) => {
       return res.status(400).json({ message: "User Name or Password is not correct" })
     }
     genTokenAndSetCookie(user._id, res)
-    res.status(200).json(user)
-    res.cookie("jwt", token, {
-      httpOnly: true,
-      secure: false, // خليه true لو شغال على HTTPS
-      sameSite: "lax", // أو "none" لو دومين مختلف + secure=true
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 أيام
-    });
+   return res.status(200).json(user)
+ 
   } catch (error) {
-    res.status(500).json({ message: "Error in login", error })
+    return res.status(500).json({ message: "Error in login", error })
   }
 };
 export const logout = async (req, res) => {
   try {
     res.cookie("jwt", "", { maxAge: 0 })
-    res.status(200).json({ message: "logout Succfully" })
+    return res.status(200).json({ message: "logout Succfully" })
 
   } catch (error) {
     return res.status(500).json({ message: "Error in logout ", error })
@@ -69,7 +64,7 @@ export const logout = async (req, res) => {
 export const getMe = async (req, res) => {
   try {
     const user = await User.findById(req.user._id)
-    res.status(200).json(user)
+   return res.status(200).json(user)
   } catch (error) {
     return res.status(500).json({ message: "Error in get Me ", error })
 

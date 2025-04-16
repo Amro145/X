@@ -10,7 +10,7 @@ export const getUsersProfile = async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: "user not found" })
         }
-        res.status(200).json(user)
+        return res.status(200).json(user)
 
     } catch (error) {
         console.log("error in get profile", error);
@@ -82,10 +82,10 @@ export const isGetSuggestedUser = async (req, res) => {
         suggestedUser.forEach(user => {
             user.password = null
         });
-        res.status(200).json(suggestedUser)
+       return res.status(200).json(suggestedUser)
     } catch (error) {
         console.log("get suggesteduser error", error);
-        res.status(500).json({ message: "get suggesteduser error" })
+       return res.status(500).json({ message: "get suggesteduser error" })
 
 
     }
@@ -131,7 +131,7 @@ export const updateProfile = async (req, res) => {
         return res.status(200).json(updateData);
     } catch (error) {
         console.log("update profile error", error);
-        res.status(500).json({ message: "update profile error" });
+      return  res.status(500).json({ message: "update profile error" });
     }
 };
 export const updatePassword = async (req, res) => {

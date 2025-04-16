@@ -70,7 +70,7 @@ export const deletePost = createAsyncThunk("post/deletePost", async (id, { rejec
 export const createComment = createAsyncThunk("comment/createComment", async ({ id, data }, { rejectWithValue }) => {
     try {
         const res = await axios.post(`http://localhost:8000/api/post/comment/${id}`, data, { withCredentials: true });
-        showNotification("posted", "success");
+        showNotification("commited", "success");
         return res.data;
     } catch (error) {
         return rejectWithValue(error.response.data.message)

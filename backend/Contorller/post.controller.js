@@ -24,8 +24,24 @@ export const createPost = async (req, res) => {
             text,
             image,
         })
+
         await newPost.save()
         const posts = await Post.find()
+
+
+
+        if (me.followers && me.followers.length > 0) {
+            me.followers.forEach(async (followerId) => {
+                const newNotification = new Notification({
+                    from: me._id,
+                    to: followerId,
+                    type: "post",
+                    post: newPost._id, // Include the post ID in the notification
+                });
+                await newNotification.save();
+            });
+        }
+        await newnotifiction.save()
         return res.status(201).json(posts)
 
 
@@ -80,6 +96,17 @@ export const commentOnPost = async (req, res) => {
             .sort({ createdAt: -1 })
             .populate({ path: "user", select: "-password" })
             .populate({ path: "comment.user", select: "-password" });
+
+        const newnotifiction = new Notification({
+            from: me._id,
+            to: post.user,
+            type: "comment",
+            text: text,
+            post: post._id,
+        })
+        await newnotifiction.save()
+
+
 
         return res.status(201).json(posts);
     } catch (error) {
@@ -204,7 +231,7 @@ export const getUserPosts = async (req, res) => {
             .populate({ path: "likes", select: "-password" })
             .populate({ path: "comment.user", select: "-password" })
         if (!user) return res.status(404).json({ message: "user not found" })
-        res.status(200).json(userPosts)
+        return res.status(200).json(userPosts)
     } catch (error) {
         console.log("error in  get user post", error);
         return res.status(500).json({ message: "error in get user post" })

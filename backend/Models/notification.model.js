@@ -14,12 +14,18 @@ const notifictionSchema = new mongoose.Schema({
     type: {
         type: String,
         required: true,
-        enum: ["follow", "like"]
+        enum: ["follow", "like", "comment", "post"],
     },
     read: {
         type: mongoose.Schema.Types.Boolean,
         default: false
     },
+    text: {
+        type: String,
+    },
+    post: {
+        type: String,
+    }
 }, { timestamps: true })
 const Notification = mongoose.model("notifiction", notifictionSchema)
 export default Notification

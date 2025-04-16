@@ -1,16 +1,14 @@
 import React, { useEffect } from "react";
 import { IoSettingsOutline } from "react-icons/io5";
-import { FaTrash, FaUser } from "react-icons/fa";
-import { FaHeart } from "react-icons/fa6";
+
 import { Link, Links } from "react-router-dom";
-import Navbar2 from "../Home/Navbar2";
-import { BiLeftArrow, BiSolidLeftArrowCircle } from "react-icons/bi";
+import { BiSolidLeftArrowCircle } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import {
   deleteNotifications,
-  deleteOneNotifications,
   notification,
 } from "../../../store (3)/api/notificationApi";
+import NotifiactionData from "./NotifiactionData";
 function Notifiction() {
   const { notificationList, notifiactionLoading } = useSelector(
     (state) => state.notification
@@ -23,12 +21,9 @@ function Notifiction() {
   const handleDelete = () => {
     dispatch(deleteNotifications());
   };
-  const handleDeleteOneNotifiaction = (id) => {
-    dispatch(deleteOneNotifications(id));
-  };
 
   return (
-    <div className="w-full ">
+    <div className="w-full min-h-screen ">
       {notifiactionLoading && (
         <div className="flex justify-center items-center h-screen">
           <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-500 border-t-transparent"></div>
@@ -66,55 +61,10 @@ function Notifiction() {
           !notifiactionLoading &&
           notificationList.map((notifiction) => {
             return (
-              <div
+              <NotifiactionData
+                notifiction={notifiction}
                 key={notifiction._id}
-                className="notificton px-5 h-20 flex justify-between items-center border-b border-gray-700 "
-              >
-                <div className="left flex  ">
-                  <div className="type pr-5">
-                    {notifiction.type === "follow" ? (
-                      <FaUser size={20} />
-                    ) : (
-                      <FaHeart size={20} className=" text-red-500" />
-                    )}
-                  </div>
-                  <div className="user grid">
-                    <Link to={`/profile/${notifiction.from.userName}`}>
-                      <div className="avatar">
-                        <div className="w-8 rounded-full">
-                          <img
-                            src={
-                              notifiction.from.profileImg ||
-                              "/avatar-placeholder.png"
-                            }
-                          />
-                        </div>
-                      </div>
-                      <span className="px-5 text-2xl">
-                        {notifiction.from.userName}
-                      </span>
-                    </Link>
-                    <div className="text ">
-                      <span className="text-gray-700">
-                        @{notifiction.from.userName}
-                      </span>
-                      <span className=" pl-5">
-                        {notifiction.type === "follow" ? (
-                          <span>followed you</span>
-                        ) : (
-                          <span>Liked to your Post</span>
-                        )}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div className="right">
-                  <FaTrash
-                    className="cursor-pointer hover:text-red-700"
-                    onClick={() => handleDeleteOneNotifiaction(notifiction._id)}
-                  />
-                </div>
-              </div>
+              />
             );
           })}
       </div>

@@ -46,14 +46,12 @@ function Profile() {
     if (!profileLoading && myProfile._id !== undefined) dispatch(getAllPosts());
   }, [dispatch, myProfile, profileLoading]);
 
-  const filtered = allPostList.filter(
-    (item) => item.user.userName === params.username
-  );
+  const filtered = allPostList.filter((item) => item.user._id === params.id);
   useEffect(() => {
     if (!profileLoading) {
-      setIsMyProfile(params.username === userData.userName);
+      setIsMyProfile(params.id === userData._id);
     }
-  }, [profileLoading, userData, params.username]);
+  }, [profileLoading, userData, params.id]);
 
   return (
     <>
@@ -65,7 +63,7 @@ function Profile() {
       {!profileLoading && myProfile ? (
         <>
           <div className="header flex justify-start gap-6 px-5 py-5 items-center">
-            <Link to="/" className="flex items-center gap-2"> 
+            <Link to="/" className="flex items-center gap-2">
               <FaArrowLeft className="w-5 h-5 text-gray-700" />
               <div className="info grid">
                 <span className="font-bold text-2xl">
