@@ -19,6 +19,6 @@ const RightBarButton = ({ id }) => {
     setIsFollow((prev) => !prev);
   };
 
-  return <div onClick={handle}>{isFollow ? "Unfollow" : "Follow"}</div>;
+  return <div onClick={handle}>{isFollow ? "unFollow" : "Follow"}</div>;
 };
 export default RightBarButton;

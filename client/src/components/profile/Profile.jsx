@@ -12,6 +12,7 @@ import { getAllPosts } from "../../../store (3)/api/postApi";
 import { ProfileFn } from "../../../store (3)/api/userApi";
 import { timeSince } from "../../../lib/date";
 import { getFollowers, getFollowing } from "../../../store (3)/api/authApi";
+import Navbar2 from "../Home/Navbar2";
 
 function Profile() {
   const { myProfile, profileLoading } = useSelector((state) => state.auth);
@@ -64,12 +65,14 @@ function Profile() {
       {!profileLoading && myProfile ? (
         <>
           <div className="header flex justify-start gap-6 px-5 py-5 items-center">
-            <Link to="/">
-              <FaArrowLeft />
+            <Link to="/" className="flex items-center gap-2"> 
+              <FaArrowLeft className="w-5 h-5 text-gray-700" />
+              <div className="info grid">
+                <span className="font-bold text-2xl">
+                  {myProfile?.userName}
+                </span>
+              </div>
             </Link>
-            <div className="info grid">
-              <span className="font-bold text-2xl">{myProfile?.userName}</span>
-            </div>
           </div>
 
           {/* COVER IMG */}

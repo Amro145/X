@@ -5,9 +5,9 @@ import { useParams } from "react-router-dom";
 import FollowData from "./FollowData";
 
 function Followers() {
-  const { followersList, followLoading } = useSelector((state) => state.auth);
+  const { followersList, getFollowLoading } = useSelector((state) => state.auth);
   console.log(followersList);
-  if (!followLoading) {
+  if (!getFollowLoading) {
     console.log(followersList);
   }
   const params = useParams();
@@ -17,7 +17,7 @@ function Followers() {
   }, [dispatch, params.id]); // Added dispatch to dependency array
   return (
     <div>
-      {followLoading ? (
+      {getFollowLoading ? (
         <p>Loading...</p> // Consider a better loading indicator
       ) : followersList === undefined || followersList?.length === 0 ? (
         <p className="text-center text-gray-500 h-54 flex justify-center items-center text-3xl">
