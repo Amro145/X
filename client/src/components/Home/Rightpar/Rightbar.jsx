@@ -1,24 +1,78 @@
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import {
+  followUnFollow,
+  ProfileFn,
+  suggestedUser,
+} from "../../../../store (3)/api/userApi";
+import { getUserPosts } from "../../../../store (3)/api/postApi";
+import RightBarSkeleton from "../../skeleton/RightBarSkeleton";
+import RightBarButton from "./RightBarButton";
 
-const RightBarButton = ({ id }) => {
-  console.log(id);
-  const { userData } = useSelector((state) => state.auth);
-  const [isFollow, setIsFollow] = useState(
-    userData?.following.includes(id) || false
+function Rightbar() {
+  const { suggestedUserList, suggestedLoading } = useSelector(
+    (state) => state.auth
   );
-  console.log(id);
-  console.log(userData?.following);
+  const dispatch = useDispatch();
   useEffect(() => {
-    setIsFollow(userData?.following.includes(id));
-  }, [userData, id]);
-  console.log(isFollow);
-
-  const handle = () => {
-    // مثلاً تقلب الحالة
-    setIsFollow((prev) => !prev);
+    dispatch(suggestedUser());
+  }, [dispatch]);
+  const handleProfileClick = (userId) => {
+    dispatch(ProfileFn(userId));
+    dispatch(getUserPosts(userId));
   };
 
-  return <div onClick={handle}>{isFollow ? "Unfollow" : "Follow"}</div>;
-};
-export default RightBarButton;
+  return (
+    <div className="hidden md:block my-4  w-full h-screen overflow-y-scroll ">
+      {suggestedLoading ? (
+        <RightBarSkeleton />
+      ) : suggestedUserList !== null && suggestedUserList.length !== 0 ? (
+        suggestedUserList?.map((user) => {
+          console.log(user)
+          return (
+            <div className="flex w-full  justify-center items-center gap-2 " key={user._id}>
+              <Link
+                to={`/profile/${user._id}`}
+                onClick={() => {
+                  handleProfileClick(user._id);
+                }}
+              >
+                <div className="user flex py-2 ">
+                  <div className="avatar p-2">
+                    <div className="w-10 rounded-full">
+                      <img src={user.profileImg || "/avatar-placeholder.png"} />
+                    </div>
+                  </div>
+                  <div className="text grid">
+                    <span>{user.userName}</span>
+                    <span className="text-gray-700 text-sm">
+                      @{user.userName}
+                    </span>
+                  </div>
+                </div>
+              </Link>
+              <div
+                className="button"
+                onClick={() => dispatch(followUnFollow(user._id))}
+              >
+                <button
+                  className="btn bg-white text-black hover:bg-white hover:opacity-90 rounded-full btn-sm"
+                  onClick={(e) => {
+                    e.preventDefault();
+                  }}
+                >
+                  <RightBarButton id={user._id} />
+                </button>
+              </div>
+            </div>
+          );
+        })
+      ) : (
+        <div></div>
+      )}
+    </div>
+  );
+}
+
+export default Rightbar;
