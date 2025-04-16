@@ -11,6 +11,7 @@ const initialState = {
     creatPostLoading: false,
     commentLoading: false,
     error: null,
+    commentError: null,
 }
 const postSlice = createSlice({
     name: "cart",
@@ -70,7 +71,7 @@ const postSlice = createSlice({
             })
             .addCase(getFollowingPosts.rejected, (state, action) => {
                 state.postLoading = false;
-                state.error = action.error.message;
+                state.error = action.payload;
             })
             // liked post
             .addCase(getLikedPosts.pending, (state) => {
@@ -83,7 +84,7 @@ const postSlice = createSlice({
             })
             .addCase(getLikedPosts.rejected, (state, action) => {
                 state.postLoading = false;
-                state.error = action.error.message;
+                state.error = action.payload
             })
             // user post
             .addCase(getUserPosts.pending, (state) => {
@@ -96,7 +97,7 @@ const postSlice = createSlice({
             })
             .addCase(getUserPosts.rejected, (state, action) => {
                 state.postLoading = false;
-                state.error = action.error.message;
+                state.error = action.payload;
             })
             // delete Post
             .addCase(deletePost.pending, (state) => {
@@ -109,12 +110,12 @@ const postSlice = createSlice({
             })
             .addCase(deletePost.rejected, (state, action) => {
                 state.postLoading = false;
-                state.error = action.error.message;
+                state.error = action.payload;
             })
             // comment on  Post
             .addCase(createComment.pending, (state) => {
                 state.commentLoading = true;
-                state.error = null;
+                state.commentError = null;
             })
             .addCase(createComment.fulfilled, (state, action) => {
                 state.commentLoading = false;
@@ -122,7 +123,7 @@ const postSlice = createSlice({
             })
             .addCase(createComment.rejected, (state, action) => {
                 state.commentLoading = false;
-                state.error = action.error.message;
+                state.commentError = action.payload;
             })
             // like un like on  Post
             .addCase(likeUnLike.pending, (state) => {
@@ -135,7 +136,7 @@ const postSlice = createSlice({
             })
             .addCase(likeUnLike.rejected, (state, action) => {
                 state.postLoading = false;
-                state.error = action.error.message;
+                state.error = action.payload;
             })
 
 

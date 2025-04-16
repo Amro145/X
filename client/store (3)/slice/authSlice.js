@@ -1,6 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
     checkAuth,
+    getFollowers,
+    getFollowing,
     login, logout, signup
 } from "../api/authApi";
 import { editPassword, editProfile, followUnFollow, ProfileFn, suggestedUser } from "../api/userApi";
@@ -12,6 +14,9 @@ const initialState = {
     signupError: null,
     checkLoading: false,
     myProfile: [],
+    followingList: [],
+    followersList: [],
+    getFollowLoading: false,
     suggestedUserList: [],
     suggestedLoading: false,
     followStatus: [],
@@ -25,7 +30,6 @@ const authSlice = createSlice({
     extraReducers: (builder) => {
         builder
             // profile function
-
             .addCase(ProfileFn.pending, (state) => {
                 state.profileLoading = true;
                 state.error = null
@@ -38,6 +42,7 @@ const authSlice = createSlice({
                 state.profileLoading = false;
                 state.error = action.error.message
             })
+
             // suggested User
             .addCase(suggestedUser.pending, (state) => {
                 state.suggestedLoading = true;
@@ -67,7 +72,8 @@ const authSlice = createSlice({
                 state.followLoading = false;
                 state.error = action.error.message;
             })
-
+            
+            //singup
             .addCase(signup.pending, (state) => {
                 state.loading = true;
                 state.error = null
@@ -81,6 +87,7 @@ const authSlice = createSlice({
                 state.loading = false;
                 state.signupError = action.payload
             })
+            // login
             .addCase(login.pending, (state) => {
                 state.loading = true;
                 state.signupError = null
@@ -95,6 +102,7 @@ const authSlice = createSlice({
                 state.loading = false;
                 state.loginError = action.payload
             })
+            // logout
             .addCase(logout.pending, (state) => {
                 state.loading = true;
                 state.loginError = null
@@ -108,7 +116,7 @@ const authSlice = createSlice({
                 state.loading = false;
                 state.error = action.error.message
             })
-
+            //checkAuth
             .addCase(checkAuth.pending, (state) => {
                 state.loading = true;
                 state.checkLoading = true;
@@ -149,6 +157,32 @@ const authSlice = createSlice({
             .addCase(editPassword.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message
+            })
+            //getFollowing
+            .addCase(getFollowing.pending, (state) => {
+                state.getFollowLoading = true;
+                state.error = null
+            })
+            .addCase(getFollowing.fulfilled, (state, action) => {
+                state.getFollowLoading = false;
+                state.followingList = action.payload
+            })
+            .addCase(getFollowing.rejected, (state, action) => {
+                state.getFollowLoading = false;
+                state.error = action.payload
+            })
+            //getFollowers   
+            .addCase(getFollowers.pending, (state) => {
+                state.getFollowLoading = true;
+                state.error = null
+            })
+            .addCase(getFollowers.fulfilled, (state, action) => {
+                state.getFollowLoading = false;
+                state.followersList = action.payload
+            })
+            .addCase(getFollowers.rejected, (state, action) => {
+                state.getFollowLoading = false;
+                state.error = action.payload
             })
 
     }

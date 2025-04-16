@@ -42,4 +42,22 @@ export const checkAuth = createAsyncThunk("auth/checkAuth", async () => {
     const res = await axios.get("http://localhost:8000/api/auth/check", { withCredentials: true })
     return res.data
 })
+export const getFollowing = createAsyncThunk("user/following", async (id, { rejectWithValue }) => {
+    try {
+        const res = await axios.get(`http://localhost:8000/api/users/following/${id}`, { withCredentials: true })
+        return res.data
+    } catch (error) {
+        const message = error.response?.data?.message || "Failed to fetch following data";
+        return rejectWithValue(message);
+    }
+})
+export const getFollowers = createAsyncThunk("user/followers", async (id, { rejectWithValue }) => {
+    try {
+        const res = await axios.get(`http://localhost:8000/api/users/followers/${id}`, { withCredentials: true })
+        return res.data
+    } catch (error) {
+        const message = error.response?.data?.message || "Failed to fetch followers data";
+        return rejectWithValue(message);
+    }
+})
 

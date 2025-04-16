@@ -54,7 +54,7 @@ export const login = async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 أيام
     });
   } catch (error) {
-    return res.status(500).json({ message: "Error in Login ", error })
+    res.status(500).json({ message: "Error in login", error })
   }
 };
 export const logout = async (req, res) => {

@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllPosts } from "../../../store (3)/api/postApi";
 import { ProfileFn } from "../../../store (3)/api/userApi";
 import { timeSince } from "../../../lib/date";
+import { getFollowers, getFollowing } from "../../../store (3)/api/authApi";
 
 function Profile() {
   const { myProfile, profileLoading } = useSelector((state) => state.auth);
@@ -138,18 +139,26 @@ function Profile() {
                 </div>
               </div>
               <div className="follow mt-3">
-                <span className="text-gray-700 text-sm mr-5">
-                  <span className="text-white">
-                    {myProfile?.followers?.length}
-                  </span>
-                  Followers
-                </span>
-                <span className="text-gray-700 text-sm">
-                  <span className="text-white">
-                    {myProfile?.following?.length}
-                  </span>
-                  following
-                </span>
+                <Link
+                  to={`/profile/followers/${myProfile?._id}`}
+                  className="text-white"
+                  onClick={() => {
+                    dispatch(getFollowing(myProfile?._id));
+                  }}
+                >
+                  {myProfile?.followers?.length}
+                  <span className="text-gray-700 text-sm"> followers</span>{" "}
+                </Link>
+                <Link
+                  to={`/profile/following/${myProfile?._id}`}
+                  className="text-white"
+                  onClick={() => {
+                    dispatch(getFollowers(myProfile?._id));
+                  }}
+                >
+                  {myProfile?.following?.length}
+                  <span className="text-gray-700 text-sm"> following</span>{" "}
+                </Link>
               </div>
             </div>
             {isMyProfile ? (

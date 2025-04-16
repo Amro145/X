@@ -54,7 +54,6 @@ export const followUnFollowUser = async (req, res) => {
             await newnotifiction.save()
             const myaccount = await User.findById(me._id).select("-password")
             const followUser = await User.findById(id).select("-password")
-
             return res.status(200).json({ myaccount, followUser, message: true, })
         }
 
@@ -177,7 +176,9 @@ export const getFollowing = async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: "user not found" })
         }
-        return res.status(200).json(user.following)
+        const myFollowing = user.following
+        const myProfile = await User.findById(req.user._id).select("-password")
+        return res.status(200).json({ myFollowing, myProfile })
     } catch (error) {
         console.log("error in get Following", error);
         return res.status(500).json({ message: "error in get Following" })

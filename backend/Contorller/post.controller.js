@@ -67,6 +67,9 @@ export const commentOnPost = async (req, res) => {
         if (!post) {
             return res.status(404).json({ message: "Post not found" });
         }
+        if (!text) {
+            return res.status(400).json({ message: "Comment text is required" });
+        }
 
         const comment = { user: me._id, text };
         post.comment.push(comment);

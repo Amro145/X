@@ -4,6 +4,8 @@ import Login from "./components/AuthPage/Login";
 import Home from "./components/Home/Home";
 import Notifiction from "./components/Notifiction/Notifiction";
 import Profile from "./components/profile/Profile";
+import Followers from "./components/profile/Followers";
+import Following from "./components/profile/Following";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { checkAuth } from "../store (3)/api/authApi";
@@ -50,6 +52,20 @@ function App() {
             path="/profile/:id"
             element={
               userData.length !== 0 ? <Profile /> : <Navigate to="/login" />
+            }
+          />
+
+          <Route
+            path="/profile/followers/:id"
+            element={
+              userData.length !== 0 ? <Followers /> : <Navigate to="/login" />
+            }
+          />
+
+          <Route
+            path="/profile/following/:id"
+            element={
+              userData.length !== 0 ? <Following /> : <Navigate to="/login" />
             }
           />
         </Routes>

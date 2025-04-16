@@ -19,8 +19,13 @@ function PostDetails({ onePost }) {
   const [isBookmark, setIsBookmark] = useState(false);
   const [post, setPosts] = useState([]);
   const [isLike, setLike] = useState(false);
-  const { postLoading, allPostList, commentLoading, creatPostLoading } =
-    useSelector((state) => state.post);
+  const {
+    postLoading,
+    allPostList,
+    commentLoading,
+    creatPostLoading,
+    commentError,
+  } = useSelector((state) => state.post);
   const { userData } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
@@ -141,6 +146,7 @@ function PostDetails({ onePost }) {
                       )}
                       {post.comment.map((comment) => (
                         <div key={comment._id}>
+                          {commentError && <div className="text-red-500 ">{commentError}</div>}
                           <Link
                             to={`/profile/${comment.user.userName}`}
                             className="flex gap-2 items-start"
