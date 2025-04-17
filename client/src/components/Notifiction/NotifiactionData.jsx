@@ -5,6 +5,7 @@ import { FaTrash, FaUser } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
+import { BsPostcardHeart } from "react-icons/bs";
 
 function NotifiactionData({ notifiction }) {
   const dispatch = useDispatch();

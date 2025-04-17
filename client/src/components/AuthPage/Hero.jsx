@@ -1,5 +1,5 @@
-import React from "react";
 import { Link } from "react-router-dom";
+import React from "react";
 function Hero() {
   return (
     <div className="grid grid-cols-12 gap-4  w-full h-screen overflow-hidden ">

@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import PostDetails from "./PostDetails";
 import { useSelector } from "react-redux";
 import { getAllPosts } from "../../../../store (3)/api/postApi";
+import { useDispatch } from "react-redux";
 
 function Post() {
   const { postLoading, allPostList } = useSelector((state) => state.post);

@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllPosts } from "../../../store (3)/api/postApi";
 import { ProfileFn } from "../../../store (3)/api/userApi";
 import { timeSince } from "../../../lib/date";
+import { getFollowers, getFollowing } from "../../../store (3)/api/authApi";
 import Navbar2 from "../Home/Navbar2";
 
 function Profile() {

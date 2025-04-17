@@ -9,10 +9,10 @@ import { ProfileFn } from "../../../../store (3)/api/userApi";
 import { logout } from "../../../../store (3)/api/authApi";
 import { notification } from "../../../../store (3)/api/notificationApi";
 function Sidbar() {
-  const { userData, checkLoading } = useSelector((state) => state.auth);
+  const { userData } = useSelector((state) => state.auth);
   const { notificationList } = useSelector((state) => state.notification);
   const dispatch = useDispatch();
-
+  const { checkLoading } = useSelector((state) => state.notification);
   useEffect(() => {
     dispatch(notification());
   }, [dispatch]);

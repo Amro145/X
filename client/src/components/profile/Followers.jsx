@@ -4,7 +4,7 @@ import { getFollowers } from "../../../store (3)/api/authApi";
 import { Link, useParams } from "react-router-dom";
 import FollowData from "./FollowData";
 import { FaArrowLeft } from "react-icons/fa";
-
+import { getFollowLoading } from "../../../store (3)/api/authApi";
 function Followers() {
   const { followersList } = useSelector((state) => state.auth);
   console.log(followersList);

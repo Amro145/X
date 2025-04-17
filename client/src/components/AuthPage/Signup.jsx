@@ -14,6 +14,7 @@ function Signup() {
     email: "",
   });
   const [errorMessage, setErrorMessage] = useState("");
+
   const cleanData = {
     userName: formData.userName,
     email: formData.email,

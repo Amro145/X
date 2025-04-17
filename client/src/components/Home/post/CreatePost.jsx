@@ -8,10 +8,10 @@ import { createPost } from "../../../../store (3)/api/postApi";
 const CreatePost = () => {
   const [text, setText] = useState("");
   const [img, setImg] = useState(null);
+  const isError = false;
 
   const imgRef = useRef(null);
 
-  const isError = false;
   const { creatPostLoading } = useSelector((state) => state.post);
   const { userData } = useSelector((state) => state.auth);
   const dispatch = useDispatch();

@@ -4,6 +4,8 @@ import { getFollowing } from "../../../store (3)/api/authApi";
 import { useParams } from "react-router-dom";
 import FollowData from "./FollowData";
 import { FaArrowLeft } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { getFollowLoading } from "../../../store (3)/api/authApi";
 
 function Following() {
   const { followingList } = useSelector(

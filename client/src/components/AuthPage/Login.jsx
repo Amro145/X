@@ -13,6 +13,7 @@ function Login() {
     email: "",
     password: "",
   });
+
   const validateForm = () => {
     if (!cleanData.email || !cleanData.email.trim()) {
       Swal.fire({
@@ -35,14 +36,10 @@ function Login() {
   const handleonChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  const [errorMessage, setErrorMessage] = useState("");
   const handleSubmit = (data) => {
     if (validateForm() === true) {
       dispatch(login(data));
-      setErrorMessage(loginError);
-      console.log(errorMessage);
-    } else {
-      setErrorMessage(loginError);
+      console.log(loginError);
     }
   };
   return (
@@ -67,7 +64,7 @@ function Login() {
             <div className="title font-extrabold text-4xl mb-3 md:mb-10">
               Let's go.
             </div>
-            {(errorMessage && formData.email !== "") ||
+            {(loginError && formData.email !== "") ||
               (formData.password !== "" && (
                 <div className="text-red-400 mb-2">{loginError}</div>
               ))}
