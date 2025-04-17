@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 const RightBarButton = ({ id }) => {
   const { userData } = useSelector((state) => state.auth);
 
-  // تأكد من وجود userData ووجود following قبل تهيئة الحالة
+  // Ensure userData and following exist before initializing the state
   const [isFollow, setIsFollow] = useState(
     userData && userData.following ? userData.following.includes(id) : false
   );
@@ -13,10 +13,10 @@ const RightBarButton = ({ id }) => {
     if (userData && userData.following) {
       const newFollowStatus = userData.following.includes(id);
       if (newFollowStatus !== isFollow) {
-        setIsFollow(newFollowStatus); // تحديث الحالة فقط إذا كان هناك تغيير
+        setIsFollow(newFollowStatus); // Update the state only if there is a change
       }
     }
-  }, [userData, id]); // إضافة isFollow في القائمة لمراقبة التغييرات
+  }, [userData, id]); // Add isFollow to the dependency list to monitor changes
 
   return <div>{isFollow ? "unFollow" : "Follow"}</div>;
 };

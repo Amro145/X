@@ -16,7 +16,7 @@ function App() {
 
   useEffect(() => {
     if (!checkLoading) {
-      // تحقق من حالة التوثيق
+      // Check authentication status
       dispatch(checkAuth());
     }
   }, [dispatch]);

@@ -31,7 +31,7 @@ export const createPost = async (req, res) => {
 
 
         if (me.followers && me.followers.length > 0) {
-            // استخدام for...of للتأكد من التزامن الصحيح مع async/await
+            // Use for...of to ensure proper synchronization with async/await
             for (const followerId of me.followers) {
                 const newNotification = new Notification({
                     from: me._id,
@@ -79,28 +79,28 @@ export const commentOnPost = async (req, res) => {
         const postId = req.params.id;
         const { text } = req.body;
 
-        // البحث عن البوست
+        // Search for the post
         const post = await Post.findById(postId);
         if (!post) {
             return res.status(404).json({ message: "Post not found" });
         }
 
-        // التحقق من وجود نص التعليق
+        // Check if the comment text exists
         if (!text) {
             return res.status(400).json({ message: "Comment text is required" });
         }
 
-        // إضافة التعليق إلى البوست
+        // Add the comment to the post
         const comment = { user: me._id, text };
-        post.comment.push(comment); // تأكد من أن الحقل صحيح في السكيما (تعليق وليس comment)
+        post.comment.push(comment); // Ensure the field is correct in the schema (comment, not تعليق)
         await post.save();
 
-        // إرجاع البوست المحدد مع التعليقات
+        // Return the specified post with comments
         const updatedPost = await Post.findById(postId)
             .populate({ path: "user", select: "-password" })
             .populate({ path: "comments.user", select: "-password" });
 
-        // إنشاء إشعار للمستخدم صاحب البوست
+        // Create a notification for the post owner
         const newNotification = new Notification({
             from: me._id,
             to: post.user,
@@ -125,16 +125,16 @@ export const likeUnlike = async (req, res) => {
         const me = req.user;
         const postId = req.params.id;
 
-        // البحث عن البوست
+        // Search for the post
         const post = await Post.findById(postId);
         if (!post) {
             return res.status(404).json({ message: "Post not found" });
         }
 
-        // التحقق إذا كان المستخدم قد أبدى إعجابه بالفعل
+        // Check if the user has already liked the post
         const isLike = post.likes.includes(me._id);
 
-        // إذا لم يكن قد أبدى إعجابه، قم بإضافته
+        // If not liked, add the like
         if (!isLike) {
             await Post.findByIdAndUpdate(postId, {
                 $push: { likes: me._id }
@@ -144,7 +144,7 @@ export const likeUnlike = async (req, res) => {
                 $push: { likedPosts: postId }
             });
 
-            // إنشاء إشعار للمستخدم صاحب البوست
+            // Create a notification for the post owner
             if (me._id.toString() !== post.user.toString()) {
                 const newNotification = new Notification({
                     from: me._id,
@@ -154,14 +154,14 @@ export const likeUnlike = async (req, res) => {
                 await newNotification.save();
             }
 
-            // إرجاع البوست المحدث
+            // Return the updated post
             const updatedPost = await Post.findById(postId)
                 .populate({ path: "user", select: "-password" })
                 .populate({ path: "comment.user", select: "-password" });
 
             return res.status(200).json(updatedPost);
         } else {
-            // إذا كان قد أبدى إعجابه بالفعل، قم بإلغاء الإعجاب
+            // If already liked, remove the like
             await Post.findByIdAndUpdate(postId, {
                 $pull: { likes: me._id }
             });
@@ -170,7 +170,7 @@ export const likeUnlike = async (req, res) => {
                 $pull: { likedPosts: postId }
             });
 
-            // إرجاع البوست المحدث
+            // Return the updated post
             const updatedPost = await Post.findById(postId)
                 .populate({ path: "user", select: "-password" })
                 .populate({ path: "comment.user", select: "-password" });
