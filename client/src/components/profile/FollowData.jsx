@@ -4,6 +4,7 @@ import { followUnFollow } from "../../../store (3)/api/userApi";
 import RightBarButton from "../Home/Rightpar/RightBarButton";
 
 import { FaArrowLeft } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 function FollowData({ user }) {
   const { userData } = useSelector((state) => state.auth);
