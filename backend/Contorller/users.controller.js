@@ -46,12 +46,17 @@ export const followUnFollowUser = async (req, res) => {
             await User.findByIdAndUpdate(id, { $push: { followers: req.user._id } })
             await User.findByIdAndUpdate(req.user._id, { $push: { following: id } })
             // send notfication
-            const newnotifiction = new Notfication({
+            if (!me || !selectedUser) {
+                return res.status(400).json({ message: "Invalid user data" });
+            }
+
+            const newNotification = new Notification({
                 from: me._id,
                 to: selectedUser._id,
                 type: "follow",
-            })
-            await newnotifiction.save()
+            });
+            await newNotification.save();
+
             const myaccount = await User.findById(me._id).select("-password")
             const followUser = await User.findById(id).select("-password")
             return res.status(200).json({ myaccount, followUser, message: true, })
@@ -82,10 +87,10 @@ export const isGetSuggestedUser = async (req, res) => {
         suggestedUser.forEach(user => {
             user.password = null
         });
-       return res.status(200).json(suggestedUser)
+        return res.status(200).json(suggestedUser)
     } catch (error) {
         console.log("get suggesteduser error", error);
-       return res.status(500).json({ message: "get suggesteduser error" })
+        return res.status(500).json({ message: "get suggesteduser error" })
 
 
     }
@@ -131,7 +136,7 @@ export const updateProfile = async (req, res) => {
         return res.status(200).json(updateData);
     } catch (error) {
         console.log("update profile error", error);
-      return  res.status(500).json({ message: "update profile error" });
+        return res.status(500).json({ message: "update profile error" });
     }
 };
 export const updatePassword = async (req, res) => {
@@ -147,6 +152,7 @@ export const updatePassword = async (req, res) => {
             if (password.length < 6) {
                 return res.status(400).json({ message: "Password is too Short" })
             }
+            
             const isMatch = await bcrypt.compare(oldPassword, user.password)
             if (isMatch) {
                 const salt = await bcrypt.genSalt(10)

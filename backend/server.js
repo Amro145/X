@@ -25,7 +25,13 @@ app.use(
     origin: "http://localhost:5173", // Allow requests from the frontend
     credentials: true, // Allow cookies to be sent
     methods: ["GET", "POST", "PUT", "DELETE"], // Specify allowed HTTP methods
-    allowedHeaders: ["Content-Type", "Authorization"], // Specify allowed headers
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "Accept",
+      "X-Requested-With",
+      "x-access-token"
+    ],
   })
 );
 
@@ -46,7 +52,7 @@ app.use("/api/notifiction", notifictionRoutes);
 // Global error-handling middleware
 app.use((err, req, res, next) => {
   console.error("Error:", err.message); // Log the error to the console
- return res.status(err.status || 500).json({
+  return res.status(err.status || 500).json({
     message: err.message || "Internal Server Error",
   }); // Render the error page with the error object
 });

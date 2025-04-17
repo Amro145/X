@@ -41,7 +41,7 @@ const CreatePost = () => {
     >
       <div className="avatar px-2">
         <div className="w-8 rounded-full">
-          <img src={userData.ProfilePic || "/avatar-placeholder.png"} />
+          <img src={userData.profilePic || "/avatar-placeholder.png"} />
         </div>
       </div>
       <form

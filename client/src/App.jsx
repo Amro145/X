@@ -15,11 +15,12 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(checkAuth());
+    if (!checkLoading) {
+      // تحقق من حالة التوثيق
+      dispatch(checkAuth());
+    }
   }, [dispatch]);
-  useEffect(() => {
-    console.log("userData", userData);
-  }, [userData]);
+
   return (
     <BrowserRouter>
       {checkLoading ? (

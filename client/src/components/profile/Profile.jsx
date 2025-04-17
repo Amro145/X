@@ -67,7 +67,7 @@ function Profile() {
               <FaArrowLeft className="w-5 h-5 text-gray-700" />
               <div className="info grid">
                 <span className="font-bold text-2xl">
-                  {myProfile?.userName}
+                  {myProfile?._id}
                 </span>
               </div>
             </Link>

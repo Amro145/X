@@ -33,14 +33,14 @@ function Login() {
     password: formData.password[0],
   };
   const handleonChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: [e.target.value] });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
   const [errorMessage, setErrorMessage] = useState("");
   const handleSubmit = (data) => {
     if (validateForm() === true) {
       dispatch(login(data));
       setErrorMessage(loginError);
-      console.log(errorMessage)
+      console.log(errorMessage);
     } else {
       setErrorMessage(loginError);
     }
@@ -67,11 +67,10 @@ function Login() {
             <div className="title font-extrabold text-4xl mb-3 md:mb-10">
               Let's go.
             </div>
-            {errorMessage && formData.email !== "" || formData.password !==  "" && (
-              <div className="text-red-400 mb-2">
-                {loginError?.toLowerCase()}
-              </div>
-            )}
+            {(errorMessage && formData.email !== "") ||
+              (formData.password !== "" && (
+                <div className="text-red-400 mb-2">{loginError}</div>
+              ))}
 
             <form className="grid gap-6  w-full md:w-auto  ">
               <label className="input input-bordered rounded flex items-center gap-2">

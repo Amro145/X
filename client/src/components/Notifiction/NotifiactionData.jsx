@@ -41,7 +41,7 @@ function NotifiactionData({ notifiction }) {
       <div className="left flex  ">
         <div className="type pr-5">{handleType()}</div>
         <div className="user grid">
-          <Link to={`/profile/${notifiction.from.userName}`}>
+          <Link to={`/profile/${notifiction.from._id}`}>
             <div className="avatar">
               <div className="w-8 rounded-full">
                 <img

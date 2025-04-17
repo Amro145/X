@@ -11,7 +11,7 @@ export const signup = async (req, res) => {
     }
     // hash password
     const salt = await bcrypt.genSalt(10)
-    const password = await req.body.password
+    const password = req.body.password
     const hashedPassword = await bcrypt.hash(password, salt)
     // create user
     const newUser = new User({
@@ -20,8 +20,9 @@ export const signup = async (req, res) => {
       password: hashedPassword
     })
     if (newUser) {
-      genTokenAndSetCookie(newUser._id, res)
       await newUser.save()
+      genTokenAndSetCookie(newUser._id, res)
+
       return res.status(201).json(newUser)
 
     } else {
@@ -31,23 +32,22 @@ export const signup = async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Error in signup", error })
-
-
   }
 };
 export const login = async (req, res) => {
   const { email, password } = req.body
   try {
+    if (!email?.trim() || !password?.trim()) {
+      return res.status(400).json({ message: "Email and password are required" });
+    }
     const user = await User.findOne({ email })
     const isPasswordMatch = await bcrypt.compare(password, user?.password || "")
-    if (email === "" || password === "") {
-      return res.status(400).json({ message: "Email and Password are required" })
-    } else if (!user || !isPasswordMatch) {
-      return res.status(400).json({ message: "User Name or Password is not correct" })
+    if (!user || !isPasswordMatch) {
+      return res.status(400).json({ message: "Invalid email or password" });
     }
     genTokenAndSetCookie(user._id, res)
-   return res.status(200).json(user)
- 
+    return res.status(200).json(user)
+
   } catch (error) {
     return res.status(500).json({ message: "Error in login", error })
   }
@@ -64,7 +64,7 @@ export const logout = async (req, res) => {
 export const getMe = async (req, res) => {
   try {
     const user = await User.findById(req.user._id)
-   return res.status(200).json(user)
+    return res.status(200).json(user)
   } catch (error) {
     return res.status(500).json({ message: "Error in get Me ", error })
 

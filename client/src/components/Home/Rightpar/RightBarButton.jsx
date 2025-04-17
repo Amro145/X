@@ -2,23 +2,23 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 const RightBarButton = ({ id }) => {
-  console.log(id);
   const { userData } = useSelector((state) => state.auth);
+
+  // تأكد من وجود userData ووجود following قبل تهيئة الحالة
   const [isFollow, setIsFollow] = useState(
-    userData?.following.includes(id) || false
+    userData && userData.following ? userData.following.includes(id) : false
   );
-  console.log(id);
-  console.log(userData?.following);
+
   useEffect(() => {
-    setIsFollow(userData?.following.includes(id));
-  }, [userData, id]);
-  console.log(isFollow);
+    if (userData && userData.following) {
+      const newFollowStatus = userData.following.includes(id);
+      if (newFollowStatus !== isFollow) {
+        setIsFollow(newFollowStatus); // تحديث الحالة فقط إذا كان هناك تغيير
+      }
+    }
+  }, [userData, id]); // إضافة isFollow في القائمة لمراقبة التغييرات
 
-  const handle = () => {
-    // مثلاً تقلب الحالة
-    setIsFollow((prev) => !prev);
-  };
-
-  return <div onClick={handle}>{isFollow ? "unFollow" : "Follow"}</div>;
+  return <div>{isFollow ? "unFollow" : "Follow"}</div>;
 };
+
 export default RightBarButton;

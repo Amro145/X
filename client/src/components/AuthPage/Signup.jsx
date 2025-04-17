@@ -15,9 +15,9 @@ function Signup() {
   });
   const [errorMessage, setErrorMessage] = useState("");
   const cleanData = {
-    userName: formData.userName[0],
-    email: formData.email[0],
-    password: formData.password[0],
+    userName: formData.userName,
+    email: formData.email,
+    password: formData.password,
   };
   const { loading, signupError } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -58,7 +58,7 @@ function Signup() {
     }
   };
   const handleOnChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: [e.target.value] });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
   return (
     <div className="flex flex-col justify-center items-center md:grid md:grid-cols-12 md:gap-4  w-full h-screen overflow-hidden  ">
@@ -88,7 +88,7 @@ function Signup() {
                 formData.password !== "" ||
                 (formData.userName !== "" && (
                   <div className="text-red-400 mb-2">
-                    {signupError.toLowerCase()}
+                    {signupError}
                   </div>
                 ))}
               <label className="input input-bordered rounded flex items-center gap-2">

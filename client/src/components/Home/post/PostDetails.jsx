@@ -51,7 +51,7 @@ function PostDetails({ onePost }) {
   }, [post, postLoading]);
   const handleCommentSubmit = (e) => {
     e.preventDefault();
-    dispatch(createComment({ id: post._id, data: { text: comment } }));
+    dispatch(createComment({ id: post?._id, data: { text: comment } }));
     setComment("");
   };
 

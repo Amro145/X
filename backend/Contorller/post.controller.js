@@ -31,7 +31,8 @@ export const createPost = async (req, res) => {
 
 
         if (me.followers && me.followers.length > 0) {
-            me.followers.forEach(async (followerId) => {
+            // استخدام for...of للتأكد من التزامن الصحيح مع async/await
+            for (const followerId of me.followers) {
                 const newNotification = new Notification({
                     from: me._id,
                     to: followerId,
@@ -39,9 +40,8 @@ export const createPost = async (req, res) => {
                     post: newPost._id, // Include the post ID in the notification
                 });
                 await newNotification.save();
-            });
+            }
         }
-        await newnotifiction.save()
         return res.status(201).json(posts)
 
 
@@ -79,54 +79,72 @@ export const commentOnPost = async (req, res) => {
         const postId = req.params.id;
         const { text } = req.body;
 
+        // البحث عن البوست
         const post = await Post.findById(postId);
         if (!post) {
             return res.status(404).json({ message: "Post not found" });
         }
+
+        // التحقق من وجود نص التعليق
         if (!text) {
             return res.status(400).json({ message: "Comment text is required" });
         }
 
+        // إضافة التعليق إلى البوست
         const comment = { user: me._id, text };
-        post.comment.push(comment);
+        post.comment.push(comment); // تأكد من أن الحقل صحيح في السكيما (تعليق وليس comment)
         await post.save();
 
-        // Fetch updated posts with populated user and comment.user fields
-        const posts = await Post.find()
-            .sort({ createdAt: -1 })
+        // إرجاع البوست المحدد مع التعليقات
+        const updatedPost = await Post.findById(postId)
             .populate({ path: "user", select: "-password" })
-            .populate({ path: "comment.user", select: "-password" });
+            .populate({ path: "comments.user", select: "-password" });
 
-        const newnotifiction = new Notification({
+        // إنشاء إشعار للمستخدم صاحب البوست
+        const newNotification = new Notification({
             from: me._id,
             to: post.user,
             type: "comment",
             text: text,
             post: post._id,
-        })
-        await newnotifiction.save()
+        });
+        await newNotification.save();
 
 
 
-        return res.status(201).json(posts);
+        return res.status(201).json(updatedPost);
     } catch (error) {
         console.log("Error in adding comment:", error);
         return res.status(500).json({ message: "Error in adding comment" });
     }
 };
+
 export const likeUnlike = async (req, res) => {
     try {
         console.log("User in likeUnlike:", req.user); // Debug log
         const me = req.user;
         const postId = req.params.id;
+
+        // البحث عن البوست
         const post = await Post.findById(postId);
         if (!post) {
             return res.status(404).json({ message: "Post not found" });
         }
+
+        // التحقق إذا كان المستخدم قد أبدى إعجابه بالفعل
         const isLike = post.likes.includes(me._id);
+
+        // إذا لم يكن قد أبدى إعجابه، قم بإضافته
         if (!isLike) {
-            await Post.updateOne({ _id: postId }, { $push: { likes: me._id } });
-            await User.updateOne({ _id: me._id }, { $push: { likedPosts: postId } });
+            await Post.findByIdAndUpdate(postId, {
+                $push: { likes: me._id }
+            });
+
+            await User.findByIdAndUpdate(me._id, {
+                $push: { likedPosts: postId }
+            });
+
+            // إنشاء إشعار للمستخدم صاحب البوست
             if (me._id.toString() !== post.user.toString()) {
                 const newNotification = new Notification({
                     from: me._id,
@@ -135,25 +153,36 @@ export const likeUnlike = async (req, res) => {
                 });
                 await newNotification.save();
             }
-            const posts = await Post.find()
-                .sort({ createdAt: -1 })
+
+            // إرجاع البوست المحدث
+            const updatedPost = await Post.findById(postId)
                 .populate({ path: "user", select: "-password" })
                 .populate({ path: "comment.user", select: "-password" });
-            return res.status(200).json(posts);
+
+            return res.status(200).json(updatedPost);
         } else {
-            await Post.updateOne({ _id: postId }, { $pull: { likes: me._id } });
-            await User.updateOne({ _id: me._id }, { $pull: { likedPosts: postId } });
-            const posts = await Post.find()
-                .sort({ createdAt: -1 })
+            // إذا كان قد أبدى إعجابه بالفعل، قم بإلغاء الإعجاب
+            await Post.findByIdAndUpdate(postId, {
+                $pull: { likes: me._id }
+            });
+
+            await User.findByIdAndUpdate(me._id, {
+                $pull: { likedPosts: postId }
+            });
+
+            // إرجاع البوست المحدث
+            const updatedPost = await Post.findById(postId)
                 .populate({ path: "user", select: "-password" })
                 .populate({ path: "comment.user", select: "-password" });
-            return res.status(200).json(posts);
+
+            return res.status(200).json(updatedPost);
         }
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: "Error in like/unlike", error });
     }
-}
+};
+
 export const getAllPosts = async (req, res) => {
     try {
         const posts = await Post.find().sort({ createdAt: -1 })

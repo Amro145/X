@@ -18,7 +18,7 @@ export const protectRoute = async (req, res, next) => {
         req.user = user
         next()
     } catch (error) {
-        // console.log("error in protcted route", error);
+        console.log("error in protcted route", error);
         return res.status(500).json({ message: "Error in Protct Route" })
 
     }
