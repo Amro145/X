@@ -33,7 +33,7 @@ function Navbar() {
           }}
           className="relative cursor-pointer hover:bg-secondary bg-transparent transition delay-100 duration-200 ease-in w-full flex justify-center"
         >
-          <div className="pt-1">follwoing</div>
+          <div className="pt-1">following</div>
           {type === "following" && (
             <div className="absolute bottom-0 w-10  h-1 rounded-full bg-primary"></div>
           )}

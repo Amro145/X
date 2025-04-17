@@ -29,8 +29,8 @@ function Login() {
     }
   };
   const cleanData = {
-    email: formData.email[0],
-    password: formData.password[0],
+    email: formData.email,
+    password: formData.password,
   };
   const handleonChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });

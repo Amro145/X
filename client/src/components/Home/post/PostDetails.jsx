@@ -17,7 +17,7 @@ function PostDetails({ onePost }) {
   const formatedDate = timeSince(onePost.createdAt);
   const [comment, setComment] = useState("");
   const [isBookmark, setIsBookmark] = useState(false);
-  const [post, setPosts] = useState([]);
+  const [post, setPosts] = useState({});
   const [isLike, setLike] = useState(false);
   const {
     postLoading,
@@ -130,7 +130,7 @@ function PostDetails({ onePost }) {
               >
                 <FaRegComment className="w-4 h-4  text-slate-500 group-hover:text-sky-400" />
                 <span className="text-sm text-slate-500 group-hover:text-sky-400">
-                  {post.comment.length}
+                  {post.comment.length || 0}
                 </span>
                 <dialog
                   id={`comment_modal${post._id}`}
