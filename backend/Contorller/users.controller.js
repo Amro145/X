@@ -50,7 +50,7 @@ export const followUnFollowUser = async (req, res) => {
                 return res.status(400).json({ message: "Invalid user data" });
             }
 
-            const newNotification = new Notification({
+            const newNotification = new Notfication({
                 from: me._id,
                 to: selectedUser._id,
                 type: "follow",
@@ -152,7 +152,7 @@ export const updatePassword = async (req, res) => {
             if (password.length < 6) {
                 return res.status(400).json({ message: "Password is too Short" })
             }
-            
+
             const isMatch = await bcrypt.compare(oldPassword, user.password)
             if (isMatch) {
                 const salt = await bcrypt.genSalt(10)

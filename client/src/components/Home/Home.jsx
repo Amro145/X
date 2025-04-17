@@ -4,7 +4,6 @@ import CreatePost from "./post/CreatePost";
 import Sidbar from "./sidebar/Sidebar";
 import Rightbar from "./Rightpar/Rightbar";
 import Post from "./post/Post";
-import PostDetails from "./post/PostDetails";
 
 function Home() {
   return (

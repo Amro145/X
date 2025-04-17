@@ -1,14 +1,15 @@
 import React, { useEffect } from "react";
-import { IoSettingsOutline } from "react-icons/io5";
 
-import { Link, Links } from "react-router-dom";
-import { BiSolidLeftArrowCircle } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import {
   deleteNotifications,
   notification,
 } from "../../../store (3)/api/notificationApi";
 import NotifiactionData from "./NotifiactionData";
+import Swal from "sweetalert2";
+import { Link } from "react-router-dom";
+import { BiSolidLeftArrowCircle } from "react-icons/bi";
+import { IoSettingsOutline } from "react-icons/io5";
 function Notifiction() {
   const { notificationList, notifiactionLoading } = useSelector(
     (state) => state.notification
@@ -19,7 +20,24 @@ function Notifiction() {
     dispatch(notification());
   }, []);
   const handleDelete = () => {
-    dispatch(deleteNotifications());
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to Delete All Notifiaction!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(deleteNotifications());
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your file has been deleted.",
+          icon: "success",
+        });
+      }
+    });
   };
 
   return (
@@ -56,17 +74,14 @@ function Notifiction() {
             No Notifiction
           </p>
         )}
-        {notificationList !== undefined &&
-          notificationList.length !== 0 &&
+        {notificationList?.length > 0 &&
           !notifiactionLoading &&
-          notificationList.map((notifiction) => {
-            return (
-              <NotifiactionData
-                notifiction={notifiction}
-                key={notifiction._id}
-              />
-            );
-          })}
+          notificationList.map((notifiction) => (
+            <NotifiactionData
+              notifiction={notifiction}
+              key={notifiction._id}
+            />
+          ))}
       </div>
     </div>
   );

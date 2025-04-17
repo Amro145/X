@@ -11,7 +11,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllPosts } from "../../../store (3)/api/postApi";
 import { ProfileFn } from "../../../store (3)/api/userApi";
 import { timeSince } from "../../../lib/date";
-import { getFollowers, getFollowing } from "../../../store (3)/api/authApi";
 import Navbar2 from "../Home/Navbar2";
 
 function Profile() {
@@ -67,7 +66,7 @@ function Profile() {
               <FaArrowLeft className="w-5 h-5 text-gray-700" />
               <div className="info grid">
                 <span className="font-bold text-2xl">
-                  {myProfile?._id}
+                  Home
                 </span>
               </div>
             </Link>
@@ -132,9 +131,9 @@ function Profile() {
                     {`http://localhost:5173/profile/${myProfile?._id}`}
                   </a>
                 </div>
-                <div className="date flex">
+                <div className="date flex items-center gap-2">
                   <IoCalendarOutline />
-                  <span className="text-gray-700">{`انضم  ${timeSince(
+                  <span className="text-gray-700">{`   ${timeSince(
                     myProfile?.createdAt
                   )}`}</span>
                 </div>

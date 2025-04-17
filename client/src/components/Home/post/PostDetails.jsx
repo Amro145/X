@@ -12,12 +12,13 @@ import {
   likeUnLike,
 } from "../../../../store (3)/api/postApi";
 import { timeSince } from "../../../../lib/date";
+import Swal from "sweetalert2";
 
 function PostDetails({ onePost }) {
   const formatedDate = timeSince(onePost.createdAt);
   const [comment, setComment] = useState("");
   const [isBookmark, setIsBookmark] = useState(false);
-  const [post, setPosts] = useState({});
+  const [post, setPosts] = useState([]);
   const [isLike, setLike] = useState(false);
   const {
     postLoading,
@@ -38,7 +39,24 @@ function PostDetails({ onePost }) {
   };
 
   const handleDelete = (data) => {
-    dispatch(deletePost(data));
+     Swal.fire({
+          title: "Are you sure?",
+          text: "You won't be able to Delete this post!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            dispatch(deletePost(data));
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your file has been deleted.",
+              icon: "success",
+            });
+          }
+        });
   };
 
   const handleLike = async (data) => {
@@ -61,11 +79,11 @@ function PostDetails({ onePost }) {
         <div className="border-b border-gray-700   pt-5 pb-2 px-2 ">
           <div className="postInfo flex justify-between items-center pr-10 text-start">
             <div className="userinfo">
-              <Link to={`/profile/${post.user._id}`}>
+              <Link to={`/profile/${post?.user?._id}`}>
                 <div className="avatar pr-5">
                   <div className="w-12 ">
-                    {post.user.profilePic ? (
-                      <img src={post.user.profilePic} />
+                    {post?.user?.profilePic ? (
+                      <img src={post?.user?.profilePic} />
                     ) : (
                       <div className="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
                         <svg
@@ -84,9 +102,9 @@ function PostDetails({ onePost }) {
                     )}
                   </div>
                 </div>
-                <span>{post.user.userName}</span>
+                <span>{post?.user?.userName}</span>
                 <span className="text-gray-700 text-sm">
-                  @ {post.user.email}
+                  @ {post?.user?.email}
                 </span>
                 <span className="text-gray-700">{formatedDate}</span>
               </Link>
@@ -95,8 +113,8 @@ function PostDetails({ onePost }) {
               !postLoading &&
               post &&
               post.length !== 0 &&
-              post.user !== undefined &&
-              post.user._id?.toString() === userData._id?.toString() && (
+              post?.user !== undefined &&
+              post?.user?._id?.toString() === userData._id?.toString() && (
                 <div
                   className="trash"
                   onClick={() => {
@@ -144,11 +162,11 @@ function PostDetails({ onePost }) {
                           No comment yet 🤔 Be the first one 😉
                         </p>
                       )}
+                      {commentError && (
+                        <div className="text-red-500 ">{commentError}</div>
+                      )}
                       {post.comment.map((comment) => (
                         <div key={comment._id}>
-                          {commentError && (
-                            <div className="text-red-500 ">{commentError}</div>
-                          )}
                           <Link
                             to={`/profile/${comment.user.userName}`}
                             className="flex gap-2 items-start"

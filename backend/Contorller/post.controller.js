@@ -26,7 +26,6 @@ export const createPost = async (req, res) => {
         })
 
         await newPost.save()
-        const posts = await Post.find()
 
 
 
@@ -42,8 +41,11 @@ export const createPost = async (req, res) => {
                 await newNotification.save();
             }
         }
-        return res.status(201).json(posts)
-
+        const posts = await Post.find()
+            .sort({ createdAt: -1 })
+            .populate({ path: "user", select: "-password" })
+            .populate({ path: "comment.user", select: "-password" });
+        return res.status(201).json(posts);
 
     } catch (error) {
         console.log("error in create post", error);
@@ -66,7 +68,10 @@ export const deletePost = async (req, res) => {
         }
         await Post.findByIdAndDelete(post._id)
         const posts = await Post.find()
-        return res.status(200).json(posts)
+            .sort({ createdAt: -1 })
+            .populate({ path: "user", select: "-password" })
+            .populate({ path: "comment.user", select: "-password" });
+        return res.status(201).json(posts);
 
     } catch (error) {
         console.log("error in delete post", error);
@@ -98,7 +103,7 @@ export const commentOnPost = async (req, res) => {
         // Return the specified post with comments
         const updatedPost = await Post.findById(postId)
             .populate({ path: "user", select: "-password" })
-            .populate({ path: "comments.user", select: "-password" });
+            .populate({ path: "comment.user", select: "-password" });
 
         // Create a notification for the post owner
         const newNotification = new Notification({
@@ -112,7 +117,11 @@ export const commentOnPost = async (req, res) => {
 
 
 
-        return res.status(201).json(updatedPost);
+        const posts = await Post.find()
+            .sort({ createdAt: -1 })
+            .populate({ path: "user", select: "-password" })
+            .populate({ path: "comment.user", select: "-password" });
+        return res.status(200).json(posts);
     } catch (error) {
         console.log("Error in adding comment:", error);
         return res.status(500).json({ message: "Error in adding comment" });
@@ -155,11 +164,11 @@ export const likeUnlike = async (req, res) => {
             }
 
             // Return the updated post
-            const updatedPost = await Post.findById(postId)
+            const posts = await Post.find()
+                .sort({ createdAt: -1 })
                 .populate({ path: "user", select: "-password" })
                 .populate({ path: "comment.user", select: "-password" });
-
-            return res.status(200).json(updatedPost);
+            return res.status(200).json(posts);
         } else {
             // If already liked, remove the like
             await Post.findByIdAndUpdate(postId, {
@@ -171,11 +180,11 @@ export const likeUnlike = async (req, res) => {
             });
 
             // Return the updated post
-            const updatedPost = await Post.findById(postId)
+            const posts = await Post.find()
+                .sort({ createdAt: -1 })
                 .populate({ path: "user", select: "-password" })
                 .populate({ path: "comment.user", select: "-password" });
-
-            return res.status(200).json(updatedPost);
+            return res.status(200).json(posts);
         }
     } catch (error) {
         console.log(error);
